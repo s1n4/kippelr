@@ -47,7 +47,7 @@ handle_call(terminate, _From, State) ->
     {stop, normal, ok, State};
 
 handle_call(is_authenticated, _From, State) ->
-    Res = case httpc:request(get, {State#state.url ++ "account/", [State#state.headers]}, [], []) of
+    Res = case httpc:request(get, {State#state.url ++ "account/", State#state.headers}, [], []) of
               {ok, {{"HTTP/1.1",401,"UNAUTHORIZED"}, _, _}} ->
                   false;
               {ok, _} ->
@@ -57,7 +57,7 @@ handle_call(is_authenticated, _From, State) ->
 
 handle_cast({basic_auth, {Username, Password}}, State) ->
     B64d = base64:encode_to_string(Username ++ ":" ++ Password),
-    NewState = State#state{headers={"Authorization", "Basic " ++ B64d}},
+    NewState = State#state{headers=[{"Authorization", "Basic " ++ B64d}]},
     {noreply, NewState}.
 
 handle_info(_Msg, State) ->

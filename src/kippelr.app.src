@@ -1,0 +1,14 @@
+{application, kippelr,
+ [
+  {description, "Erlang library for the Kippt API"},
+  {vsn, "1"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib,
+                  ssl,
+                  inets
+                 ]},
+  {mod, { kippelr_app, []}},
+  {env, []}
+ ]}.

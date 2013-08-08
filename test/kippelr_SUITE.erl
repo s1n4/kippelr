@@ -16,7 +16,7 @@ all() ->
     [{group, auth}].
 
 groups() ->
-    [{auth, [], [basic_auth, is_auth]}].
+    [{auth, [], [basic_auth, is_auth, token_auth]}].
 
 init_per_group(_, Config) ->
     kippelr:start(),
@@ -26,7 +26,8 @@ end_per_group(_, _Config) ->
     kippelr:stop().
 
 basic_auth(_) ->
-    ok = kippelr:auth({basic_auth, {"username", "password"}}).
+    ok = kippelr:auth({basic_auth, {"username", "password"}}),
+    false = kippelr:is_authenticated().
 
 is_auth(_) ->
     false = kippelr:is_authenticated().

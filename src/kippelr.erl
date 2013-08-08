@@ -58,6 +58,10 @@ handle_call(is_authenticated, _From, State) ->
 handle_cast({basic_auth, {Username, Password}}, State) ->
     B64d = base64:encode_to_string(Username ++ ":" ++ Password),
     NewState = State#state{headers=[{"Authorization", "Basic " ++ B64d}]},
+    {noreply, NewState};
+
+handle_cast({token_auth, {Username, Token}}, State) ->
+    NewState = State#state{headers=[{"X-Kippt-Username", Username}, {"X-Kippt-API-Token", Token}]},
     {noreply, NewState}.
 
 handle_info(_Msg, State) ->

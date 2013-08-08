@@ -40,7 +40,7 @@ is_authenticated() ->
 
 %% gen_server
 init([]) ->
-    State = #state{url=?KIPPT, headers={}},
+    State = #state{url=?KIPPT, headers=[]},
     {ok, State, ?TIMEOUT}.
 
 handle_call(terminate, _From, State) ->

@@ -1,3 +1,3 @@
 # kippelr
 
-Erlang library for the Kippt API
+Erlang library for the Kippt API (work in progress)

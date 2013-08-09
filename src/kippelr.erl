@@ -137,7 +137,10 @@ headers(State) ->
 
 parse_resp(Resp) ->
     {{_, Status, Msg}, _, Body} = Resp,
-    {Status, Msg, jsx:decode(list_to_binary(Body))}.
+    Body1 = if Body =/= [] -> jsx:decode(list_to_binary(Body));
+               true -> Body
+            end,
+    {Status, Msg, Body1}.
 
 request(Method, Request) ->
     request(Method, Request, []).

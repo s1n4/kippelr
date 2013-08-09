@@ -97,7 +97,7 @@ handle_call({clip, Id}, _From, State) ->
     {reply, Body, State};
 
 handle_call({Method, Endpoint, Id}, _From, State) ->
-    {_, Status, Body} = parse_resp(request(Method, {url(Endpoint, Id), headers(State)})),
+    {_, Status, Body} = request(Method, {url(Endpoint, Id), headers(State)}),
     {reply, {Status, Body}, State}.
 
 handle_cast({basic_auth, {Username, Password}}, State) ->

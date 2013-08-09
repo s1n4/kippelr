@@ -78,23 +78,22 @@ handle_call(terminate, _From, State) ->
     {stop, normal, ok, State};
 
 handle_call(is_authenticated, _From, State) ->
-    Result = request(get, {url("account"), headers(State)}),
-    {Status, _, _} = parse_resp(Result),
+    {Status, _, _} = request(get, {url("account"), headers(State)}),
     Resp = if Status == 401 -> false;
-             true -> true
-          end,
+              true -> true
+           end,
     {reply, Resp, State};
 
 handle_call(account, _From, State) ->
-    {_, _, Body} = parse_resp(request(get, {url("account"), headers(State)})),
+    {_, _, Body} = request(get, {url("account"), headers(State)}),
     {reply, Body, State};
 
 handle_call(clips, _From, State) ->
-    {_, _, Body} = parse_resp(request(get, {url("clips"), headers(State)})),
+    {_, _, Body} = request(get, {url("clips"), headers(State)}),
     {reply, Body, State};
 
 handle_call({clip, Id}, _From, State) ->
-    {_, _, Body} = parse_resp(request(get, {url("clips", Id), headers(State)})),
+    {_, _, Body} = request(get, {url("clips", Id), headers(State)}),
     {reply, Body, State};
 
 handle_call({Method, Endpoint, Id}, _From, State) ->
@@ -145,7 +144,7 @@ request(Method, Request, HTTPOptions) ->
 
 request(Method, Request, HTTPOptions, Options) ->
     {ok, Result} = httpc:request(Method, Request, HTTPOptions, Options),
-    Result.
+    parse_resp(Result).
 
 ensure_started(App) ->
     case application:start(App) of

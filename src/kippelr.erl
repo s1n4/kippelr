@@ -16,6 +16,7 @@
 -export([is_authenticated/0]).
 -export([account/0]).
 -export([clips/0]).
+-export([get_clip/1]).
 
 -export([upgrade/0]).
 
@@ -50,6 +51,9 @@ account() ->
 clips() ->
     gen_server:call(?MODULE, clips, ?TIMEOUT).
 
+get_clip(Id) ->
+    gen_server:call(?MODULE, {clip, Id}, ?TIMEOUT).
+
 
 %% gen_server
 init([]) ->
@@ -73,6 +77,10 @@ handle_call(account, _From, State) ->
 
 handle_call(clips, _From, State) ->
     {_, _, Body} = parse_resp(request(get, {?KIPPT ++ "clips/", State#state.headers})),
+    {reply, Body, State};
+
+handle_call({clip, Id}, _From, State) ->
+    {_, _, Body} = parse_resp(request(get, {?KIPPT ++ "clips/" ++ Id, State#state.headers})),
     {reply, Body, State}.
 
 handle_cast({basic_auth, {Username, Password}}, State) ->

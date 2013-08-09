@@ -10,13 +10,17 @@
 -export([basic_auth/1]).
 -export([is_auth/1]).
 -export([token_auth/1]).
+-export([account_info/1]).
 
 
 all() ->
-    [{group, auth}].
+    [{group, auth}, {group, account}].
 
 groups() ->
-    [{auth, [], [basic_auth, is_auth, token_auth]}].
+    [
+     {auth, [], [basic_auth, is_auth, token_auth]},
+     {account, [], [account_info]}
+    ].
 
 init_per_group(_, Config) ->
     kippelr:start(),
@@ -35,3 +39,6 @@ is_auth(_) ->
 token_auth(_) ->
     ok = kippelr:auth({token_auth, {"username", "token"}}),
     false = kippelr:is_authenticated().
+
+account_info(_) ->
+    [{<<"message">>, <<"Username and password don't match">>}] = kippelr:account().

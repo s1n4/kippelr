@@ -14,6 +14,7 @@
 -export([stop/0]).
 -export([auth/1]).
 -export([is_authenticated/0]).
+-export([account/0]).
 
 -include("kippelr.hrl").
 
@@ -37,6 +38,9 @@ auth(Options) ->
 is_authenticated() ->
     gen_server:call(?MODULE, is_authenticated, ?TIMEOUT).
 
+account() ->
+    gen_server:call(?MODULE, account, ?TIMEOUT).
+
 
 %% gen_server
 init([]) ->
@@ -52,7 +56,11 @@ handle_call(is_authenticated, _From, State) ->
     Resp = if Status == 401 -> false;
              true -> true
           end,
-    {reply, Resp, State}.
+    {reply, Resp, State};
+
+handle_call(account, _From, State) ->
+    {_, _, Body} = parse_resp(request(get, {State#state.url ++ "account/", State#state.headers})),
+    {reply, jsx:decode(Body), State}.
 
 handle_cast({basic_auth, {Username, Password}}, State) ->
     B64d = base64:encode_to_string(Username ++ ":" ++ Password),
@@ -76,7 +84,7 @@ code_change(_OldVsn, State, _Extra) ->
 %% private functions
 parse_resp(Resp) ->
     {{_, Status, Msg}, _, Body} = Resp,
-    {Status, Msg, Body}.
+    {Status, Msg, list_to_binary(Body)}.
 
 request(Method, Request) ->
     request(Method, Request, []).
@@ -85,5 +93,5 @@ request(Method, Request, HTTPOptions) ->
     request(Method, Request, HTTPOptions, []).
 
 request(Method, Request, HTTPOptions, Options) ->
-    {ok, Result } = httpc:request(Method, Request, HTTPOptions, Options),
+    {ok, Result} = httpc:request(Method, Request, HTTPOptions, Options),
     Result.

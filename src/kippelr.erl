@@ -20,11 +20,11 @@
 
 
 start() ->
-    ok = application:start(crypto),
-    ok = application:start(public_key),
-    ok = application:start(ssl),
-    ok = application:start(inets),
-    ok = application:start(kippelr).
+    ensure_started(crypto),
+    ensure_started(public_key),
+    ensure_started(ssl),
+    ensure_started(inets),
+    ensure_started(kippelr).
 
 start_link() ->
     gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
@@ -95,3 +95,11 @@ request(Method, Request, HTTPOptions) ->
 request(Method, Request, HTTPOptions, Options) ->
     {ok, Result} = httpc:request(Method, Request, HTTPOptions, Options),
     Result.
+
+ensure_started(App) ->
+    case application:start(App) of
+        ok ->
+            ok;
+        {error, {already_started, App}} ->
+            ok
+    end.

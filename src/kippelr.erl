@@ -48,7 +48,7 @@ handle_call(terminate, _From, State) ->
 
 handle_call(is_authenticated, _From, State) ->
     Res = case httpc:request(get, {State#state.url ++ "account/", State#state.headers}, [], []) of
-              {ok, {{"HTTP/1.1",401,"UNAUTHORIZED"}, _, _}} ->
+              {ok, {{"HTTP/1.1", 401, "UNAUTHORIZED"}, _, _}} ->
                   false;
               {ok, _} ->
                   true

@@ -41,4 +41,4 @@ token_auth(_) ->
     false = kippelr:is_authenticated().
 
 account_info(_) ->
-    [{<<"message">>, <<"Username and password don't match">>}] = kippelr:account().
+    [{<<"message">>, <<"Please authenticate">>}] = kippelr:account().

@@ -66,7 +66,7 @@ get_clip(Id) ->
     gen_server:call(?MODULE, {clip, Id}, ?TIMEOUT).
 
 delete_clip(Id) ->
-    gen_server:call(?MODULE, {delete, clips, Id}).
+    gen_server:call(?MODULE, {delete, clips, Id}, ?TIMEOUT).
 
 
 %% gen_server
@@ -78,26 +78,26 @@ handle_call(terminate, _From, State) ->
     {stop, normal, ok, State};
 
 handle_call(is_authenticated, _From, State) ->
-    {Status, _, _} = request(get, {url("account"), headers(State)}),
+    {Status, _, _} = request(get, {url(account), headers(State)}),
     Resp = if Status == 401 -> false;
               true -> true
            end,
     {reply, Resp, State};
 
 handle_call(account, _From, State) ->
-    {_, _, Body} = request(get, {url("account"), headers(State)}),
+    {_, _, Body} = request(get, {url(account), headers(State)}),
     {reply, Body, State};
 
 handle_call(clips, _From, State) ->
-    {_, _, Body} = request(get, {url("clips"), headers(State)}),
+    {_, _, Body} = request(get, {url(clips), headers(State)}),
     {reply, Body, State};
 
 handle_call({clip, Id}, _From, State) ->
-    {_, _, Body} = request(get, {url("clips", Id), headers(State)}),
+    {_, _, Body} = request(get, {url(clips, Id), headers(State)}),
     {reply, Body, State};
 
 handle_call({Method, Endpoint, Id}, _From, State) ->
-    {_, Status, Body} = request(Method, {url(Endpoint, Id), headers(State)}),
+    {Status, _, Body} = request(Method, {url(Endpoint, Id), headers(State)}),
     {reply, {Status, Body}, State}.
 
 handle_cast({basic_auth, {Username, Password}}, State) ->
@@ -121,13 +121,16 @@ code_change(_OldVsn, State, _Extra) ->
 
 %% private functions
 url(Endpoint) ->
-    ?KIPPT ++ Endpoint ++ "/".
+    url(Endpoint, "").
 
 url(Endpoint, Id) ->
+    url(Endpoint, Id, "").
+
+url(Endpoint, Id, Params) ->
     Id1 = if is_integer(Id) -> integer_to_list(Id);
              true -> Id
           end,
-    ?KIPPT ++ Endpoint ++ "/" ++ Id1.
+    ?KIPPT ++ atom_to_list(Endpoint) ++ "/" ++ Id1 ++ Params.
 
 headers(State) ->
     State#state.headers.

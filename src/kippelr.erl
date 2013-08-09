@@ -16,7 +16,10 @@
 -export([is_authenticated/0]).
 -export([account/0]).
 
--include("kippelr.hrl").
+-define(KIPPT, "https://kippt.com/api/").
+-define(TIMEOUT, 20000).
+
+-record(state, {headers}).
 
 
 start() ->
@@ -44,14 +47,14 @@ account() ->
 
 %% gen_server
 init([]) ->
-    State = #state{url=?KIPPT, headers=[]},
+    State = #state{headers=[]},
     {ok, State, ?TIMEOUT}.
 
 handle_call(terminate, _From, State) ->
     {stop, normal, ok, State};
 
 handle_call(is_authenticated, _From, State) ->
-    Result = request(get, {State#state.url ++ "account/", State#state.headers}),
+    Result = request(get, {?KIPPT ++ "account/", State#state.headers}),
     {Status, _, _} = parse_resp(Result),
     Resp = if Status == 401 -> false;
              true -> true
@@ -59,7 +62,7 @@ handle_call(is_authenticated, _From, State) ->
     {reply, Resp, State};
 
 handle_call(account, _From, State) ->
-    {_, _, Body} = parse_resp(request(get, {State#state.url ++ "account/", State#state.headers})),
+    {_, _, Body} = parse_resp(request(get, {?KIPPT ++ "account/", State#state.headers})),
     {reply, jsx:decode(Body), State}.
 
 handle_cast({basic_auth, {Username, Password}}, State) ->

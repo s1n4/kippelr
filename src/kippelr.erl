@@ -47,12 +47,12 @@ handle_call(terminate, _From, State) ->
     {stop, normal, ok, State};
 
 handle_call(is_authenticated, _From, State) ->
-    {ok, Resp} = httpc:request(get, {State#state.url ++ "account/", State#state.headers}, [], []),
-    {Status, _, _} = parse_resp(Resp),
-    Res = if Status == 401 -> false;
+    Result = request(get, {State#state.url ++ "account/", State#state.headers}),
+    {Status, _, _} = parse_resp(Result),
+    Resp = if Status == 401 -> false;
              true -> true
           end,
-    {reply, Res, State}.
+    {reply, Resp, State}.
 
 handle_cast({basic_auth, {Username, Password}}, State) ->
     B64d = base64:encode_to_string(Username ++ ":" ++ Password),
@@ -73,7 +73,17 @@ code_change(_OldVsn, State, _Extra) ->
     {ok, State}.
 
 
-%% private
+%% private functions
 parse_resp(Resp) ->
     {{_, Status, Msg}, _, Body} = Resp,
     {Status, Msg, Body}.
+
+request(Method, Request) ->
+    request(Method, Request, []).
+
+request(Method, Request, HTTPOptions) ->
+    request(Method, Request, HTTPOptions, []).
+
+request(Method, Request, HTTPOptions, Options) ->
+    {ok, Result } = httpc:request(Method, Request, HTTPOptions, Options),
+    Result.

@@ -53,12 +53,15 @@ auth(Options) ->
 is_authenticated() ->
     gen_server:call(?MODULE, is_authenticated, ?TIMEOUT).
 
+%% @doc get user's profile
 account() ->
     gen_server:call(?MODULE, account, ?TIMEOUT).
 
+%% @doc get user's clips
 clips() ->
     gen_server:call(?MODULE, clips, ?TIMEOUT).
 
+%% @doc get a clip
 get_clip(Id) ->
     gen_server:call(?MODULE, {clip, Id}, ?TIMEOUT).
 

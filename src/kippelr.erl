@@ -20,11 +20,11 @@
 
 
 start() ->
-    ensure_started(crypto),
-    ensure_started(public_key),
-    ensure_started(ssl),
-    ensure_started(inets),
-    ensure_started(kippelr).
+    ok = ensure_started(crypto),
+    ok = ensure_started(public_key),
+    ok = ensure_started(ssl),
+    ok = ensure_started(inets),
+    ok = ensure_started(kippelr).
 
 start_link() ->
     gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
@@ -101,5 +101,7 @@ ensure_started(App) ->
         ok ->
             ok;
         {error, {already_started, App}} ->
-            ok
+            ok;
+        _ ->
+            error
     end.

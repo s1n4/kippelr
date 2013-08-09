@@ -15,6 +15,7 @@
 -export([auth/1]).
 -export([is_authenticated/0]).
 -export([account/0]).
+-export([clips/0]).
 
 -define(KIPPT, "https://kippt.com/api/").
 -define(TIMEOUT, 20000).
@@ -44,6 +45,9 @@ is_authenticated() ->
 account() ->
     gen_server:call(?MODULE, account, ?TIMEOUT).
 
+clips() ->
+    gen_server:call(?MODULE, clips, ?TIMEOUT).
+
 
 %% gen_server
 init([]) ->
@@ -63,7 +67,11 @@ handle_call(is_authenticated, _From, State) ->
 
 handle_call(account, _From, State) ->
     {_, _, Body} = parse_resp(request(get, {?KIPPT ++ "account/", State#state.headers})),
-    {reply, jsx:decode(Body), State}.
+    {reply, Body, State};
+
+handle_call(clips, _From, State) ->
+    {_, _, Body} = parse_resp(request(get, {?KIPPT ++ "clips/", State#state.headers})),
+    {reply, Body, State}.
 
 handle_cast({basic_auth, {Username, Password}}, State) ->
     B64d = base64:encode_to_string(Username ++ ":" ++ Password),
@@ -87,7 +95,7 @@ code_change(_OldVsn, State, _Extra) ->
 %% private functions
 parse_resp(Resp) ->
     {{_, Status, Msg}, _, Body} = Resp,
-    {Status, Msg, list_to_binary(Body)}.
+    {Status, Msg, jsx:decode(list_to_binary(Body))}.
 
 request(Method, Request) ->
     request(Method, Request, []).

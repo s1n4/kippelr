@@ -11,6 +11,7 @@
 -export([is_auth/1]).
 -export([token_auth/1]).
 -export([account_info/1]).
+-export([clips/1]).
 
 
 all() ->
@@ -19,10 +20,12 @@ all() ->
 groups() ->
     [
      {auth, [], [basic_auth, is_auth, token_auth]},
-     {account, [], [account_info]}
+     {account, [], [account_info]},
+     {clips, [], [clips]}
     ].
 
 init_per_group(_, Config) ->
+    meck:new(kippelr, [passthrough]),
     kippelr:start(),
     Config.
 
@@ -42,3 +45,12 @@ token_auth(_) ->
 
 account_info(_) ->
     [{<<"message">>, <<"Please authenticate">>}] = kippelr:account().
+
+clips(_) ->
+    meck:expect(kippelr, clips, fun() -> api("clips") end),
+    true = jsx:is_term(kippelr:clips()).
+
+api(File) ->
+    Path = io_lib:format("api/~p.json", [File]),
+    {ok, Content} = file:read_file(Path),
+    jsx:decode(Content).

@@ -1,0 +1,57 @@
+{
+    meta: {
+        next: null,
+        total_count: 1,
+        previous: null,
+        limit: 20,
+        offset: 0
+    },
+    objects: [
+        {
+            via: null,
+            saves: {
+                count: 0,
+                data: [ ]
+            },
+            favicon_url: "...",
+            is_favorite: false,
+            likes: {
+                count: 0,
+                data: [ ]
+            },
+            id: 16289371,
+            app_url: "/s1n4/erlang/clips/16289371",
+            title: "github.com/s1n4/kippelr",
+            comments: {
+                count: 0,
+                data: [ ]
+            },
+            type: "file",
+            updated: 1376051124,
+            user: {
+                username: "s1n4",
+                bio: "Ruby, Python, JS and Erlang for the rest of my time. I often turn cigarette into code.",
+                app_url: "/s1n4",
+                twitter: "sinasamavati",
+                counts: {
+                    follows: 0,
+                    followed_by: 0
+                },
+                github: "s1n4",
+                avatar_url: "https://d19weqihs4yh5u.cloudfront.net/avatars/dbf46a45-2379-404f-8162-3650e902e0cf/160x160",
+                is_pro: false,
+                full_name: "Sina Samavati",
+                dribbble: "",
+                id: 99157,
+                website_url: "",
+                resource_uri: "/api/users/99157/"
+            },
+            url_domain: "github.com",
+            created: 1376051124,
+            url: "https://github.com/s1n4/kippelr",
+            notes: "Erlang library for the Kippt API",
+            list: "/api/lists/461207/",
+            resource_uri: "/api/clips/16289371/"
+        },
+    ]
+}

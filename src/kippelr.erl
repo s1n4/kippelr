@@ -17,6 +17,8 @@
 -export([account/0]).
 -export([clips/0]).
 
+-export([upgrade/0]).
+
 -define(KIPPT, "https://kippt.com/api/").
 -define(TIMEOUT, 20000).
 
@@ -116,3 +118,13 @@ ensure_started(App) ->
         _ ->
             error
     end.
+
+
+%% don't use it at home
+upgrade() ->
+    {ok, Vsn} = application:get_key(?MODULE, vsn),
+    sys:suspend(?MODULE),
+    code:purge(?MODULE),
+    code:load_file(?MODULE),
+    sys:change_code(?MODULE, ?MODULE, Vsn, []),
+    sys:resume(?MODULE).

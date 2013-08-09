@@ -15,7 +15,7 @@
 -export([auth/1]).
 -export([is_authenticated/0]).
 -export([account/0]).
--export([clips/0]).
+-export([get_clips/0]).
 -export([get_clip/1]).
 -export([delete_clip/1]).
 
@@ -58,12 +58,12 @@ account() ->
     gen_server:call(?MODULE, account, ?TIMEOUT).
 
 %% @doc get user's clips
-clips() ->
-    gen_server:call(?MODULE, clips, ?TIMEOUT).
+get_clips() ->
+    gen_server:call(?MODULE, {get, clips, ""}, ?TIMEOUT).
 
 %% @doc get a clip
 get_clip(Id) ->
-    gen_server:call(?MODULE, {clip, Id}, ?TIMEOUT).
+    gen_server:call(?MODULE, {get, clips, Id}, ?TIMEOUT).
 
 delete_clip(Id) ->
     gen_server:call(?MODULE, {delete, clips, Id}, ?TIMEOUT).
@@ -86,14 +86,6 @@ handle_call(is_authenticated, _From, State) ->
 
 handle_call(account, _From, State) ->
     {_, _, Body} = request(get, {url(account), headers(State)}),
-    {reply, Body, State};
-
-handle_call(clips, _From, State) ->
-    {_, _, Body} = request(get, {url(clips), headers(State)}),
-    {reply, Body, State};
-
-handle_call({clip, Id}, _From, State) ->
-    {_, _, Body} = request(get, {url(clips, Id), headers(State)}),
     {reply, Body, State};
 
 handle_call({Method, Endpoint, Id}, _From, State) ->

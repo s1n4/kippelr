@@ -47,11 +47,10 @@ handle_call(terminate, _From, State) ->
     {stop, normal, ok, State};
 
 handle_call(is_authenticated, _From, State) ->
-    Res = case httpc:request(get, {State#state.url ++ "account/", State#state.headers}, [], []) of
-              {ok, {{"HTTP/1.1", 401, "UNAUTHORIZED"}, _, _}} ->
-                  false;
-              {ok, _} ->
-                  true
+    {ok, Resp} = httpc:request(get, {State#state.url ++ "account/", State#state.headers}, [], []),
+    {Status, _, _} = parse_resp(Resp),
+    Res = if Status == 401 -> false;
+             true -> true
           end,
     {reply, Res, State}.
 
@@ -72,3 +71,9 @@ terminate(normal, _State) ->
 
 code_change(_OldVsn, State, _Extra) ->
     {ok, State}.
+
+
+%% private
+parse_resp(Resp) ->
+    {{_, Status, Msg}, _, Body} = Resp,
+    {Status, Msg, Body}.

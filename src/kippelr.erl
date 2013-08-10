@@ -163,29 +163,29 @@ handle_call(terminate, _From, State) ->
     {stop, normal, ok, State};
 
 handle_call(is_authenticated, _From, State) ->
-    {Status, _, _} = request(get, {url(account), headers(State)}),
+    {Status, _, _} = request(get, {url([account]), headers(State)}),
     Resp = if Status == 401 -> false;
               true -> true
            end,
     {reply, Resp, State};
 
 handle_call({Method, Endpoint, Id}, _From, State) ->
-    {Status, _, Body} = request(Method, {url(Endpoint, Id), headers(State)}),
+    {Status, _, Body} = request(Method, {url([Endpoint, Id]), headers(State)}),
     {reply, {ok, {Status, Body}}, State};
 
 handle_call({Method, Endpoint, Id, Collection}, _From, State) ->
-    {Status, _, Body} = request(Method, {url(Endpoint, Id, Collection), headers(State)}),
+    {Status, _, Body} = request(Method, {url([Endpoint, Id, Collection]), headers(State)}),
     {reply, {ok, {Status, Body}}, State};
 
 handle_call({Method, Endpoint, Id, Collection, CollectionId}, _From, State) ->
-    {Status, _, Body} = request(Method, {url(Endpoint, Id, Collection, CollectionId), headers(State)}),
+    {Status, _, Body} = request(Method, {url([Endpoint, Id, Collection, CollectionId]), headers(State)}),
     {reply, {ok, {Status, Body}}, State};
 
 handle_call({Method, Data}, _From, State) ->
     {Endpoint, Id} = proplists:get_value(endpoint, Data),
     {Collection, CollectionId} = proplists:get_value(collection, Data),
     Content = proplists:get_value(content, Data),
-    {Status, _, Body} = request(Method, {url(Endpoint, Id, Collection, CollectionId),
+    {Status, _, Body} = request(Method, {url([Endpoint, Id, Collection, CollectionId]),
                                        headers(State), "application/json", Content}),
     {reply, {ok, {Status, Body}}, State}.
 
@@ -209,19 +209,16 @@ code_change(_OldVsn, State, _Extra) ->
 
 
 %% private functions
-url(Endpoint) ->
-    lists:concat([?KIPPT, Endpoint, "/"]).
+url([]) ->
+    [];
+url(List) ->
+    List1 = lists:filter(fun(V) -> if V == '' -> false; true -> true end end, List),
+    url(List1, []).
 
-url(Endpoint, Id) ->
-    lists:concat([?KIPPT, Endpoint, "/", Id]).
-
-%% TODO: fix joining url parts
-
-url(Endpoint, Id, Collection) ->
-    lists:concat([?KIPPT, Endpoint, "/", Id, "/", Collection]).
-
-url(Endpoint, Id, Collection, CollectionId) ->
-    lists:concat([?KIPPT, Endpoint, "/", Id, "/", Collection, "/", CollectionId]).
+url([], Acc) ->
+    lists:concat([?KIPPT|Acc]);
+url([H|T], Acc) ->
+    url(T, Acc ++ [H] ++ ["/"]).
 
 headers(State) ->
     State#state.headers.

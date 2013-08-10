@@ -26,6 +26,7 @@
 -export([unfavorite/1]).
 -export([unlike/1]).
 -export([create_clip/1]).
+-export([create_comment/2]).
 
 -export([upgrade/0]).
 
@@ -107,7 +108,21 @@ unlike(Id) ->
 
 %% @doc create a clip
 create_clip(Clip) ->
-    gen_server:call(?MODULE, {post, {clips, Clip}}, ?TIMEOUT).
+    Data = [
+            {endpoint, {clips, ''}},
+            {collection, {'', ''}},
+            {content, Clip}
+           ],
+    gen_server:call(?MODULE, {post, Data}, ?TIMEOUT).
+
+%% @doc create a new comment for clip
+create_comment(ClipId, Comment) ->
+    Data = [
+            {endpoint, {clips, ClipId}},
+            {collection, {comments, ''}},
+            {content, Comment}
+           ],
+    gen_server:call(?MODULE, {post, Data}, ?TIMEOUT).
 
 
 %% gen_server
@@ -137,10 +152,13 @@ handle_call({Method, Endpoint, Id, Collection, CollectionId}, _From, State) ->
     {Status, _, Body} = request(Method, {url(Endpoint, Id, Collection, CollectionId), headers(State)}),
     {reply, {ok, {Status, Body}}, State};
 
-handle_call({post, {Endpoint, Data}}, _From, State) ->
-    {Status, _, Body} = request(post, {url(Endpoint), headers(State), "application/json", Data}),
+handle_call({post, Data}, _From, State) ->
+    {Endpoint, Id} = proplists:get_value(endpoint, Data),
+    {Collection, CollectionId} = proplists:get_value(collection, Data),
+    Content = proplists:get_value(content, Data),
+    {Status, _, Body} = request(post, {url(Endpoint, Id, Collection, CollectionId),
+                                       headers(State), "application/json", Content}),
     {reply, {ok, {Status, Body}}, State}.
-
 
 handle_cast({basic_auth, {Username, Password}}, State) ->
     B64d = base64:encode_to_string(Username ++ ":" ++ Password),
@@ -166,13 +184,15 @@ url(Endpoint) ->
     lists:concat([?KIPPT, Endpoint, "/"]).
 
 url(Endpoint, Id) ->
-    lists:concat([?KIPPT, Endpoint, "/", Id, "/"]).
+    lists:concat([?KIPPT, Endpoint, "/", Id]).
+
+%% TODO: fix joining url parts
 
 url(Endpoint, Id, Collection) ->
-    lists:concat([?KIPPT, Endpoint, "/", Id, "/", Collection, "/"]).
+    lists:concat([?KIPPT, Endpoint, "/", Id, "/", Collection]).
 
 url(Endpoint, Id, Collection, CollectionId) ->
-    lists:concat([?KIPPT, Endpoint, "/", Id, "/", Collection, "/", CollectionId, "/"]).
+    lists:concat([?KIPPT, Endpoint, "/", Id, "/", Collection, "/", CollectionId]).
 
 headers(State) ->
     State#state.headers.

@@ -24,6 +24,8 @@
 -export([delete_clip/1]).
 -export([delete_clip_comment/2]).
 -export([unfavorite/1]).
+-export([unlike/1]).
+
 -export([upgrade/0]).
 
 -define(KIPPT, "https://kippt.com/api/").
@@ -97,6 +99,10 @@ delete_clip_comment(ClipId, CommentId) ->
 %% @doc unfavorite a clip
 unfavorite(Id) ->
     gen_server:call(?MODULE, {delete, clips, Id, favorite}, ?TIMEOUT).
+
+%% @doc unlike a clip
+unlike(Id) ->
+    gen_server:call(?MODULE, {delete, clips, Id, likes}, ?TIMEOUT).
 
 
 %% gen_server

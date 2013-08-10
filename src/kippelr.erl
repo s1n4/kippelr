@@ -90,12 +90,12 @@ handle_call(is_authenticated, _From, State) ->
     {reply, Resp, State};
 
 handle_call(account, _From, State) ->
-    {_, _, Body} = request(get, {url(account), headers(State)}),
-    {reply, Body, State};
+    {Status, _, Body} = request(get, {url(account), headers(State)}),
+    {reply, {ok, {Status, Body}}, State};
 
 handle_call({Method, Endpoint, Id}, _From, State) ->
     {Status, _, Body} = request(Method, {url(Endpoint, Id), headers(State)}),
-    {reply, {Status, Body}, State}.
+    {reply, {ok, {Status, Body}}, State}.
 
 handle_cast({basic_auth, {Username, Password}}, State) ->
     B64d = base64:encode_to_string(Username ++ ":" ++ Password),

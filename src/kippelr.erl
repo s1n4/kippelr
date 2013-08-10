@@ -22,6 +22,7 @@
 -export([get_clip_comments/1]).
 -export([get_clip_likes/1]).
 -export([delete_clip/1]).
+-export([delete_clip_comment/2]).
 -export([upgrade/0]).
 
 -define(KIPPT, "https://kippt.com/api/").
@@ -84,9 +85,13 @@ get_clip_comments(Id) ->
 get_clip_likes(Id) ->
     gen_server:call(?MODULE, {get, clips, Id, likes}, ?TIMEOUT).
 
+%% @doc delete a clip
 delete_clip(Id) ->
     gen_server:call(?MODULE, {delete, clips, Id}, ?TIMEOUT).
 
+%% @doc delete a comment
+delete_clip_comment(ClipId, CommentId) ->
+    gen_server:call(?MODULE, {delete, clips, ClipId, comments, CommentId}, ?TIMEOUT).
 
 %% gen_server
 init([]) ->
@@ -109,6 +114,10 @@ handle_call({Method, Endpoint, Id}, _From, State) ->
 
 handle_call({Method, Endpoint, Id, Collection}, _From, State) ->
     {Status, _, Body} = request(Method, {url(Endpoint, Id, Collection), headers(State)}),
+    {reply, {ok, {Status, Body}}, State};
+
+handle_call({Method, Endpoint, Id, Collection, CollectionId}, _From, State) ->
+    {Status, _, Body} = request(Method, {url(Endpoint, Id, Collection, CollectionId), headers(State)}),
     {reply, {ok, {Status, Body}}, State}.
 
 handle_cast({basic_auth, {Username, Password}}, State) ->
@@ -132,13 +141,16 @@ code_change(_OldVsn, State, _Extra) ->
 
 %% private functions
 url(Endpoint) ->
-    url(Endpoint, "").
+    lists:concat([?KIPPT, Endpoint, "/"]).
 
 url(Endpoint, Id) ->
-    url(Endpoint, Id, "").
+    lists:concat([?KIPPT, Endpoint, "/", Id, "/"]).
 
 url(Endpoint, Id, Collection) ->
     lists:concat([?KIPPT, Endpoint, "/", Id, "/", Collection, "/"]).
+
+url(Endpoint, Id, Collection, CollectionId) ->
+    lists:concat([?KIPPT, Endpoint, "/", Id, "/", Collection, "/", CollectionId, "/"]).
 
 headers(State) ->
     State#state.headers.

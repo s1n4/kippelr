@@ -20,6 +20,7 @@
 -export([get_clips_feed/0]).
 -export([get_clip/1]).
 -export([get_clip_comments/1]).
+-export([get_clip_likes/1]).
 -export([delete_clip/1]).
 -export([upgrade/0]).
 
@@ -78,6 +79,10 @@ get_clip(Id) ->
 %% @doc get a clip's comments
 get_clip_comments(Id) ->
     gen_server:call(?MODULE, {get, clips, Id, comments}, ?TIMEOUT).
+
+%% @doc get a clip's likes
+get_clip_likes(Id) ->
+    gen_server:call(?MODULE, {get, clips, Id, likes}, ?TIMEOUT).
 
 delete_clip(Id) ->
     gen_server:call(?MODULE, {delete, clips, Id}, ?TIMEOUT).

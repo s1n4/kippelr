@@ -29,6 +29,7 @@
 -export([unlike/1]).
 -export([create_clip/1]).
 -export([create_comment/2]).
+-export([modify_clip/2]).
 
 -export([upgrade/0]).
 
@@ -144,6 +145,14 @@ create_comment(ClipId, Comment) ->
            ],
     gen_server:call(?MODULE, {post, Data}, ?TIMEOUT).
 
+%% @doc modify a clip
+modify_clip(Id, Clip) ->
+    Data = [
+            {endpoint, {clips, Id}},
+            {collection, {'', ''}},
+            {content, Clip}
+           ],
+    gen_server:call(?MODULE, {put, Data}, ?TIMEOUT).
 
 %% gen_server
 init([]) ->
@@ -172,11 +181,11 @@ handle_call({Method, Endpoint, Id, Collection, CollectionId}, _From, State) ->
     {Status, _, Body} = request(Method, {url(Endpoint, Id, Collection, CollectionId), headers(State)}),
     {reply, {ok, {Status, Body}}, State};
 
-handle_call({post, Data}, _From, State) ->
+handle_call({Method, Data}, _From, State) ->
     {Endpoint, Id} = proplists:get_value(endpoint, Data),
     {Collection, CollectionId} = proplists:get_value(collection, Data),
     Content = proplists:get_value(content, Data),
-    {Status, _, Body} = request(post, {url(Endpoint, Id, Collection, CollectionId),
+    {Status, _, Body} = request(Method, {url(Endpoint, Id, Collection, CollectionId),
                                        headers(State), "application/json", Content}),
     {reply, {ok, {Status, Body}}, State}.
 

@@ -16,6 +16,7 @@
 -export([is_authenticated/0]).
 -export([account/0]).
 -export([get_clips/0]).
+-export([get_clips_favorites/0]).
 -export([get_clip/1]).
 -export([delete_clip/1]).
 
@@ -60,6 +61,10 @@ account() ->
 %% @doc get user's clips
 get_clips() ->
     gen_server:call(?MODULE, {get, clips, ""}, ?TIMEOUT).
+
+%% @doc get user's favorites
+get_clips_favorites() ->
+    gen_server:call(?MODULE, {get, 'clips/favorites', ""}, ?TIMEOUT).
 
 %% @doc get a clip
 get_clip(Id) ->

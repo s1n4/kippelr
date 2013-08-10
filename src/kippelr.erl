@@ -25,6 +25,7 @@
 -export([delete_clip_comment/2]).
 -export([favorite/1]).
 -export([unfavorite/1]).
+-export([like/1]).
 -export([unlike/1]).
 -export([create_clip/1]).
 -export([create_comment/2]).
@@ -111,6 +112,15 @@ favorite(Id) ->
 %% @doc unfavorite a clip
 unfavorite(Id) ->
     gen_server:call(?MODULE, {delete, clips, Id, favorite}, ?TIMEOUT).
+
+%% @doc like a clip
+like(Id) ->
+    Data = [
+            {endpoint, {clips, Id}},
+            {collection, {likes, ''}},
+            {content, ""}
+           ],
+    gen_server:call(?MODULE, {post, Data}, ?TIMEOUT).
 
 %% @doc unlike a clip
 unlike(Id) ->

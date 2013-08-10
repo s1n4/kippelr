@@ -19,8 +19,8 @@
 -export([get_clips_favorites/0]).
 -export([get_clips_feed/0]).
 -export([get_clip/1]).
+-export([get_clip_comments/1]).
 -export([delete_clip/1]).
-
 -export([upgrade/0]).
 
 -define(KIPPT, "https://kippt.com/api/").
@@ -75,6 +75,10 @@ get_clips_feed() ->
 get_clip(Id) ->
     gen_server:call(?MODULE, {get, clips, Id}, ?TIMEOUT).
 
+%% @doc get a clip's comments
+get_clip_comments(Id) ->
+    gen_server:call(?MODULE, {get, clips, Id, comments}, ?TIMEOUT).
+
 delete_clip(Id) ->
     gen_server:call(?MODULE, {delete, clips, Id}, ?TIMEOUT).
 
@@ -96,6 +100,10 @@ handle_call(is_authenticated, _From, State) ->
 
 handle_call({Method, Endpoint, Id}, _From, State) ->
     {Status, _, Body} = request(Method, {url(Endpoint, Id), headers(State)}),
+    {reply, {ok, {Status, Body}}, State};
+
+handle_call({Method, Endpoint, Id, Collection}, _From, State) ->
+    {Status, _, Body} = request(Method, {url(Endpoint, Id, Collection), headers(State)}),
     {reply, {ok, {Status, Body}}, State}.
 
 handle_cast({basic_auth, {Username, Password}}, State) ->
@@ -124,11 +132,8 @@ url(Endpoint) ->
 url(Endpoint, Id) ->
     url(Endpoint, Id, "").
 
-url(Endpoint, Id, Params) ->
-    Id1 = if is_integer(Id) -> integer_to_list(Id);
-             true -> Id
-          end,
-    ?KIPPT ++ atom_to_list(Endpoint) ++ "/" ++ Id1 ++ Params.
+url(Endpoint, Id, Collection) ->
+    lists:concat([?KIPPT, Endpoint, "/", Id, "/", Collection, "/"]).
 
 headers(State) ->
     State#state.headers.

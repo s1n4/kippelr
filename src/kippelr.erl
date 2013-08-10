@@ -56,7 +56,7 @@ is_authenticated() ->
 
 %% @doc get user's profile
 account() ->
-    gen_server:call(?MODULE, account, ?TIMEOUT).
+    gen_server:call(?MODULE, {get, account, ""}, ?TIMEOUT).
 
 %% @doc get user's clips
 get_clips() ->
@@ -88,10 +88,6 @@ handle_call(is_authenticated, _From, State) ->
               true -> true
            end,
     {reply, Resp, State};
-
-handle_call(account, _From, State) ->
-    {Status, _, Body} = request(get, {url(account), headers(State)}),
-    {reply, {ok, {Status, Body}}, State};
 
 handle_call({Method, Endpoint, Id}, _From, State) ->
     {Status, _, Body} = request(Method, {url(Endpoint, Id), headers(State)}),

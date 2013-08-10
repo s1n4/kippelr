@@ -39,6 +39,7 @@
 -record(state, {headers}).
 
 
+%% @doc start kippelr
 start() ->
     ok = ensure_started(crypto),
     ok = ensure_started(public_key),
@@ -49,6 +50,7 @@ start() ->
 start_link() ->
     gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
 
+%% @doc stop kippelr
 stop() ->
     gen_server:call(?MODULE, terminate).
 
@@ -154,6 +156,7 @@ modify_clip(Id, Clip) ->
            ],
     gen_server:call(?MODULE, {put, Data}, ?TIMEOUT).
 
+
 %% gen_server
 init([]) ->
     State = #state{headers=[]},
@@ -212,6 +215,7 @@ code_change(_OldVsn, State, _Extra) ->
 url([]) ->
     [];
 url(List) ->
+    %% remove empty atoms
     List1 = lists:filter(fun(V) -> if V == '' -> false; true -> true end end, List),
     url(List1, []).
 

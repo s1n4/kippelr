@@ -25,6 +25,7 @@
 -export([delete_clip_comment/2]).
 -export([unfavorite/1]).
 -export([unlike/1]).
+-export([create_clip/1]).
 
 -export([upgrade/0]).
 
@@ -104,6 +105,10 @@ unfavorite(Id) ->
 unlike(Id) ->
     gen_server:call(?MODULE, {delete, clips, Id, likes}, ?TIMEOUT).
 
+%% @doc create a clip
+create_clip(Clip) ->
+    gen_server:call(?MODULE, {post, {clips, Clip}}, ?TIMEOUT).
+
 
 %% gen_server
 init([]) ->
@@ -130,7 +135,12 @@ handle_call({Method, Endpoint, Id, Collection}, _From, State) ->
 
 handle_call({Method, Endpoint, Id, Collection, CollectionId}, _From, State) ->
     {Status, _, Body} = request(Method, {url(Endpoint, Id, Collection, CollectionId), headers(State)}),
+    {reply, {ok, {Status, Body}}, State};
+
+handle_call({post, {Endpoint, Data}}, _From, State) ->
+    {Status, _, Body} = request(post, {url(Endpoint), headers(State), "application/json", Data}),
     {reply, {ok, {Status, Body}}, State}.
+
 
 handle_cast({basic_auth, {Username, Password}}, State) ->
     B64d = base64:encode_to_string(Username ++ ":" ++ Password),

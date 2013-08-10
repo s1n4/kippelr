@@ -17,6 +17,7 @@
 -export([account/0]).
 -export([get_clips/0]).
 -export([get_clips_favorites/0]).
+-export([get_clips_feed/0]).
 -export([get_clip/1]).
 -export([delete_clip/1]).
 
@@ -64,6 +65,10 @@ get_clips() ->
 
 %% @doc get user's favorites
 get_clips_favorites() ->
+    gen_server:call(?MODULE, {get, 'clips/favorites', ""}, ?TIMEOUT).
+
+%% @doc get user's feed
+get_clips_feed() ->
     gen_server:call(?MODULE, {get, 'clips/favorites', ""}, ?TIMEOUT).
 
 %% @doc get a clip

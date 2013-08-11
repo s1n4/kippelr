@@ -33,6 +33,7 @@
 -export([notifications/0]).
 -export([mark_notifications_as_read/0]).
 -export([get_lists/0]).
+-export([get_list/1]).
 
 -export([upgrade/0]).
 
@@ -175,6 +176,10 @@ mark_notifications_as_read() ->
 %% @doc get user's lists
 get_lists() ->
     gen_server:call(?MODULE, {get, [lists]}, ?TIMEOUT).
+
+%% @doc get a list
+get_list(Id) ->
+    gen_server:call(?MODULE, {get, [lists, Id]}, ?TIMEOUT).
 
 
 %% gen_server

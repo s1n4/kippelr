@@ -69,39 +69,39 @@ is_authenticated() ->
 
 %% @doc get user's profile
 account() ->
-    gen_server:call(?MODULE, {get, account, ""}, ?TIMEOUT).
+    gen_server:call(?MODULE, {get, [account]}, ?TIMEOUT).
 
 %% @doc get user's clips
 get_clips() ->
-    gen_server:call(?MODULE, {get, clips, ""}, ?TIMEOUT).
+    gen_server:call(?MODULE, {get, [clips]}, ?TIMEOUT).
 
 %% @doc get user's favorites
 get_clips_favorites() ->
-    gen_server:call(?MODULE, {get, 'clips/favorites', ""}, ?TIMEOUT).
+    gen_server:call(?MODULE, {get, [clips, favorites]}, ?TIMEOUT).
 
 %% @doc get user's feed
 get_clips_feed() ->
-    gen_server:call(?MODULE, {get, 'clips/favorites', ""}, ?TIMEOUT).
+    gen_server:call(?MODULE, {get, [clips, favorites]}, ?TIMEOUT).
 
 %% @doc get a clip
 get_clip(Id) ->
-    gen_server:call(?MODULE, {get, clips, Id}, ?TIMEOUT).
+    gen_server:call(?MODULE, {get, [clips, Id]}, ?TIMEOUT).
 
 %% @doc get a clip's comments
 get_clip_comments(Id) ->
-    gen_server:call(?MODULE, {get, clips, Id, comments}, ?TIMEOUT).
+    gen_server:call(?MODULE, {get, [clips, Id, comments]}, ?TIMEOUT).
 
 %% @doc get a clip's likes
 get_clip_likes(Id) ->
-    gen_server:call(?MODULE, {get, clips, Id, likes}, ?TIMEOUT).
+    gen_server:call(?MODULE, {get, [clips, Id, likes]}, ?TIMEOUT).
 
 %% @doc delete a clip
 delete_clip(Id) ->
-    gen_server:call(?MODULE, {delete, clips, Id}, ?TIMEOUT).
+    gen_server:call(?MODULE, {delete, [clips, Id]}, ?TIMEOUT).
 
 %% @doc delete a comment
 delete_clip_comment(ClipId, CommentId) ->
-    gen_server:call(?MODULE, {delete, clips, ClipId, comments, CommentId}, ?TIMEOUT).
+    gen_server:call(?MODULE, {delete, [clips, ClipId, comments, CommentId]}, ?TIMEOUT).
 
 %% @doc favorite a clip
 favorite(Id) ->
@@ -114,7 +114,7 @@ favorite(Id) ->
 
 %% @doc unfavorite a clip
 unfavorite(Id) ->
-    gen_server:call(?MODULE, {delete, clips, Id, favorite}, ?TIMEOUT).
+    gen_server:call(?MODULE, {delete, [clips, Id, favorite]}, ?TIMEOUT).
 
 %% @doc like a clip
 like(Id) ->
@@ -127,7 +127,7 @@ like(Id) ->
 
 %% @doc unlike a clip
 unlike(Id) ->
-    gen_server:call(?MODULE, {delete, clips, Id, likes}, ?TIMEOUT).
+    gen_server:call(?MODULE, {delete, [clips, Id, likes]}, ?TIMEOUT).
 
 %% @doc create a clip
 create_clip(Clip) ->
@@ -172,16 +172,8 @@ handle_call(is_authenticated, _From, State) ->
            end,
     {reply, Resp, State};
 
-handle_call({Method, Endpoint, Id}, _From, State) ->
-    {Status, _, Body} = request(Method, {url([Endpoint, Id]), headers(State)}),
-    {reply, {ok, {Status, Body}}, State};
-
-handle_call({Method, Endpoint, Id, Collection}, _From, State) ->
-    {Status, _, Body} = request(Method, {url([Endpoint, Id, Collection]), headers(State)}),
-    {reply, {ok, {Status, Body}}, State};
-
-handle_call({Method, Endpoint, Id, Collection, CollectionId}, _From, State) ->
-    {Status, _, Body} = request(Method, {url([Endpoint, Id, Collection, CollectionId]), headers(State)}),
+handle_call({Method, Segment}, _From, State) when Method =:= get; Method =:= delete ->
+    {Status, _, Body} = request(Method, {url(Segment), headers(State)}),
     {reply, {ok, {Status, Body}}, State};
 
 handle_call({Method, Data}, _From, State) ->

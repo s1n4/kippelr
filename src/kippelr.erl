@@ -30,6 +30,7 @@
 -export([create_clip/1]).
 -export([create_comment/2]).
 -export([modify_clip/2]).
+-export([notifications/0]).
 
 -export([upgrade/0]).
 
@@ -155,6 +156,10 @@ modify_clip(Id, Clip) ->
             {content, Clip}
            ],
     gen_server:call(?MODULE, {put, Data}, ?TIMEOUT).
+
+%% @doc get latest notifications
+notifications() ->
+    gen_server:call(?MODULE, {get, [notifications]}, ?TIMEOUT).
 
 
 %% gen_server

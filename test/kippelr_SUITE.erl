@@ -11,21 +11,25 @@
 -export([is_auth/1]).
 -export([token_auth/1]).
 -export([account_info/1]).
--export([clips/1]).
+-export([get_clips/1]).
 
 
 all() ->
-    [{group, auth}, {group, account}].
+    [{group, auth}, {group, account}, {group, clips}].
 
 groups() ->
     [
      {auth, [], [basic_auth, is_auth, token_auth]},
      {account, [], [account_info]},
-     {clips, [], [clips]}
+     {clips, [], [get_clips]}
     ].
 
+init_per_group(clips, Config) ->
+    kippelr:start(),
+    Token = os:getenv("KIPPT_TOKEN"),
+    ok = kippelr:auth({token_auth, {"s1n4", Token}}),
+    Config;
 init_per_group(_, Config) ->
-    meck:new(kippelr, [passthrough]),
     kippelr:start(),
     Config.
 
@@ -40,17 +44,14 @@ is_auth(_) ->
     false = kippelr:is_authenticated().
 
 token_auth(_) ->
-    ok = kippelr:auth({token_auth, {"username", "token"}}),
-    false = kippelr:is_authenticated().
+    Token = os:getenv("KIPPT_TOKEN"),
+    ok = kippelr:auth({token_auth, {"s1n4", Token}}),
+    true = kippelr:is_authenticated().
 
 account_info(_) ->
-    [{<<"message">>, <<"Please authenticate">>}] = kippelr:account().
+    Token = os:getenv("KIPPT_TOKEN"),
+    ok = kippelr:auth({token_auth, {"s1n4", Token}}),
+    {ok, {200, _}} = kippelr:account().
 
-clips(_) ->
-    meck:expect(kippelr, clips, fun() -> api("clips") end),
-    true = jsx:is_term(kippelr:clips()).
-
-api(File) ->
-    Path = io_lib:format("api/~p.json", [File]),
-    {ok, Content} = file:read_file(Path),
-    jsx:decode(Content).
+get_clips(_) ->
+    {ok, {200, _}} = kippelr:get_clips().

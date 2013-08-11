@@ -39,6 +39,7 @@
 -export([create_list/1]).
 -export([follow_list/1]).
 -export([unfollow_list/1]).
+-export([modify_list/2]).
 
 -export([upgrade/0]).
 
@@ -220,6 +221,15 @@ unfollow_list(Id) ->
             {content, "{\"action\":\"unfollow\"}"}
            ],
     gen_server:call(?MODULE, {post, Data}, ?TIMEOUT).
+
+%% @doc modify a list
+modify_list(Id, Object) ->
+    Data = [
+            {endpoint, {lists, Id}},
+            {collection, {'', ''}},
+            {content, Object}
+           ],
+    gen_server:call(?MODULE, {put, Data}, ?TIMEOUT).
 
 
 %% gen_server

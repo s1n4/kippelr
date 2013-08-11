@@ -34,6 +34,7 @@
 -export([mark_notifications_as_read/0]).
 -export([get_lists/0]).
 -export([get_list/1]).
+-export([get_list_clips/1]).
 
 -export([upgrade/0]).
 
@@ -180,6 +181,10 @@ get_lists() ->
 %% @doc get a list
 get_list(Id) ->
     gen_server:call(?MODULE, {get, [lists, Id]}, ?TIMEOUT).
+
+%% @doc get a list's clips
+get_list_clips(Id) ->
+    gen_server:call(?MODULE, {get, [lists, Id, clips]}, ?TIMEOUT).
 
 
 %% gen_server

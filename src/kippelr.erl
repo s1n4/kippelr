@@ -36,6 +36,7 @@
 -export([get_list/1]).
 -export([get_list_clips/1]).
 -export([is_following_list/1]).
+-export([create_list/1]).
 
 -export([upgrade/0]).
 
@@ -190,6 +191,15 @@ get_list_clips(Id) ->
 %% @doc get information about a relationship to a list.
 is_following_list(Id) ->
     gen_server:call(?MODULE, {get, [lists, Id, relationship]}, ?TIMEOUT).
+
+%% @doc create a list
+create_list(Object) ->
+    Data = [
+            {endpoint, {lists, ''}},
+            {collection, {'', ''}},
+            {content, Object}
+           ],
+    gen_server:call(?MODULE, {post, Data}, ?TIMEOUT).
 
 
 %% gen_server

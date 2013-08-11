@@ -31,6 +31,7 @@
 -export([create_comment/2]).
 -export([modify_clip/2]).
 -export([notifications/0]).
+-export([mark_notifications_as_read/0]).
 
 -export([upgrade/0]).
 
@@ -160,6 +161,15 @@ modify_clip(Id, Clip) ->
 %% @doc get latest notifications
 notifications() ->
     gen_server:call(?MODULE, {get, [notifications]}, ?TIMEOUT).
+
+%% @doc mark notifications as read
+mark_notifications_as_read() ->
+    Data = [
+            {endpoint, {notifications, ''}},
+            {collection, {'', ''}},
+            {content, "{\"action\":\"mark_seen\"}"}
+           ],
+    gen_server:call(?MODULE, {post, Data}, ?TIMEOUT).
 
 
 %% gen_server

@@ -38,6 +38,7 @@
 -export([is_following_list/1]).
 -export([create_list/1]).
 -export([follow_list/1]).
+-export([unfollow_list/1]).
 
 -export([upgrade/0]).
 
@@ -204,6 +205,15 @@ create_list(Object) ->
 
 %% @doc follow a list
 follow_list(Id) ->
+    Data = [
+            {endpoint, {lists, Id}},
+            {collection, {relationship, ''}},
+            {content, "{\"action\":\"follow\"}"}
+           ],
+    gen_server:call(?MODULE, {post, Data}, ?TIMEOUT).
+
+%% @doc unfollow a list
+unfollow_list(Id) ->
     Data = [
             {endpoint, {lists, Id}},
             {collection, {relationship, ''}},

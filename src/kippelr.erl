@@ -37,6 +37,7 @@
 -export([get_list_clips/1]).
 -export([is_following_list/1]).
 -export([create_list/1]).
+-export([follow_list/1]).
 
 -export([upgrade/0]).
 
@@ -198,6 +199,15 @@ create_list(Object) ->
             {endpoint, {lists, ''}},
             {collection, {'', ''}},
             {content, Object}
+           ],
+    gen_server:call(?MODULE, {post, Data}, ?TIMEOUT).
+
+%% @doc follow a list
+follow_list(Id) ->
+    Data = [
+            {endpoint, {lists, Id}},
+            {collection, {relationship, ''}},
+            {content, "{\"action\":\"follow\"}"}
            ],
     gen_server:call(?MODULE, {post, Data}, ?TIMEOUT).
 

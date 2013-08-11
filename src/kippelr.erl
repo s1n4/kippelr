@@ -32,6 +32,7 @@
 -export([modify_clip/2]).
 -export([notifications/0]).
 -export([mark_notifications_as_read/0]).
+-export([get_lists/0]).
 
 -export([upgrade/0]).
 
@@ -170,6 +171,10 @@ mark_notifications_as_read() ->
             {content, "{\"action\":\"mark_seen\"}"}
            ],
     gen_server:call(?MODULE, {post, Data}, ?TIMEOUT).
+
+%% @doc get user's lists
+get_lists() ->
+    gen_server:call(?MODULE, {get, [lists]}, ?TIMEOUT).
 
 
 %% gen_server

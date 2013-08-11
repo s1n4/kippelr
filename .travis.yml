@@ -6,4 +6,4 @@ otp_release:
 env:
   global:
     secure: SJZYIzDdRWKIxaIBCDuAjjXxNcoPdOPkbPilS+6thBxVjPgcI7ok9V8owJ5PlX3HmOM35McxF2pSSV0DOi8eXEEkzPE8WJLL1QY2F4KGXeSktm5L9S9PkdexTyCFyKw6nckFGMAB6kGhP2UYOPIA0rq4Wv+nUt0wtOauQVUh2h4=
-script: "./rebar compile && ./rebar ct skip_deps=true"
+script: "rebar compile && rebar ct skip_deps=true"

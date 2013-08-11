@@ -217,7 +217,7 @@ unfollow_list(Id) ->
     Data = [
             {endpoint, {lists, Id}},
             {collection, {relationship, ''}},
-            {content, "{\"action\":\"follow\"}"}
+            {content, "{\"action\":\"unfollow\"}"}
            ],
     gen_server:call(?MODULE, {post, Data}, ?TIMEOUT).
 

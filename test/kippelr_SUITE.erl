@@ -11,7 +11,8 @@
 -export([is_auth/1]).
 -export([token_auth/1]).
 -export([account_info/1]).
--export([get_clips/1]).
+-export([gc/1]).
+-export([gcf/1]).
 
 
 all() ->
@@ -21,7 +22,7 @@ groups() ->
     [
      {auth, [], [basic_auth, is_auth, token_auth]},
      {account, [], [account_info]},
-     {clips, [], [get_clips]}
+     {clips, [], [gc, gcf]}
     ].
 
 init_per_group(clips, Config) ->
@@ -53,5 +54,8 @@ account_info(_) ->
     ok = kippelr:auth({token_auth, {"s1n4", Token}}),
     {ok, {200, _}} = kippelr:account().
 
-get_clips(_) ->
+gc(_) ->
     {ok, {200, _}} = kippelr:get_clips().
+
+gcf(_) ->
+    {ok, {200, _}} = kippelr:get_clips_favorites().

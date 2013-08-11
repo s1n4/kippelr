@@ -35,6 +35,7 @@
 -export([get_lists/0]).
 -export([get_list/1]).
 -export([get_list_clips/1]).
+-export([is_following_list/1]).
 
 -export([upgrade/0]).
 
@@ -185,6 +186,10 @@ get_list(Id) ->
 %% @doc get a list's clips
 get_list_clips(Id) ->
     gen_server:call(?MODULE, {get, [lists, Id, clips]}, ?TIMEOUT).
+
+%% @doc get information about a relationship to a list.
+is_following_list(Id) ->
+    gen_server:call(?MODULE, {get, [lists, Id, relationship]}, ?TIMEOUT).
 
 
 %% gen_server

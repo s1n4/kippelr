@@ -15,7 +15,7 @@
 -export([gcsfs/1]).
 -export([gcsf/1]).
 -export([gc/1]).
--export([gcc/1])
+-export([gcc/1]).
 -export([gcl/1]).
 
 

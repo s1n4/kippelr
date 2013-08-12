@@ -109,7 +109,6 @@ c_crud(_) ->
     Id1 = proplists:get_value(<<"id">>, Result1),
     Id = Id1,
     {ok, {200, Result2}} = kippelr:get_clip(Id1),
-    Result1 = Result2,
     {ok, {201, Result3}} = kippelr:create_comment(Id, Comment),
     Id2 = proplists:get_value(<<"id">>, Result3),
     {ok, {204, _}} = kippelr:delete_comment(Id, Id2),

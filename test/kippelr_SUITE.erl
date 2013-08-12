@@ -11,8 +11,12 @@
 -export([is_auth/1]).
 -export([token_auth/1]).
 -export([account_info/1]).
+-export([gcs/1]).
+-export([gcsfs/1]).
+-export([gcsf/1]).
 -export([gc/1]).
--export([gcf/1]).
+-export([gcc/1])
+-export([gcl/1]).
 
 
 all() ->
@@ -22,7 +26,7 @@ groups() ->
     [
      {auth, [], [basic_auth, is_auth, token_auth]},
      {account, [], [account_info]},
-     {clips, [], [gc, gcf]}
+     {clips, [], [gcs, gcsfs, gcsf, gc, gcc, gcl]}
     ].
 
 init_per_group(clips, Config) ->
@@ -45,8 +49,9 @@ is_auth(_) ->
     false = kippelr:is_authenticated().
 
 token_auth(_) ->
+    Username = os:getenv("KIPPT_USER"),
     Token = os:getenv("KIPPT_TOKEN"),
-    ok = kippelr:auth({token_auth, {"s1n4", Token}}),
+    ok = kippelr:auth({token_auth, {Username, Token}}),
     true = kippelr:is_authenticated().
 
 account_info(_) ->
@@ -54,8 +59,20 @@ account_info(_) ->
     ok = kippelr:auth({token_auth, {"s1n4", Token}}),
     {ok, {200, _}} = kippelr:account().
 
-gc(_) ->
+gcs(_) ->
     {ok, {200, _}} = kippelr:get_clips().
 
-gcf(_) ->
+gcsfs(_) ->
     {ok, {200, _}} = kippelr:get_clips_favorites().
+
+gcsf(_) ->
+    {ok, {200, _}} = kippelr:get_clips_feed().
+
+gc(_) ->
+    {ok, {200, _}} = kippelr:get_clip(16332396).
+
+gcc(_) ->
+    {ok, {200, _}} = kippelr:get_clip_comments(16332396).
+
+gcl(_) ->
+    {ok, {200, _}} = kippelr:get_clip_likes(16332396).

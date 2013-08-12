@@ -22,17 +22,26 @@
 -export([like/1]).
 -export([unlike/1]).
 -export([c_crud/1]).
+-export([notifications/1]).
+-export([gls/1]).
+-export([gl/1]).
+-export([glcs/1]).
 
 
 all() ->
-    [{group, auth}, {group, account}, {group, clips}].
+    [
+     {group, auth}, {group, account}, {group, clips}, {group, notifications},
+     {group, lists}
+    ].
 
 groups() ->
     [
      {auth, [], [basic_auth, is_auth, token_auth]},
      {account, [], [account_info]},
      {clips, [], [gcs, gcsfs, gcsf, gc, gcc, gcl, fav, unfav, like, unlike,
-                  c_crud]}
+                  c_crud]},
+     {notifications, [], [notifications]},
+     {lists, [], [gls, gl, glcs]}
     ].
 
 init_per_group(clips, Config) ->
@@ -113,3 +122,16 @@ c_crud(_) ->
     Id2 = proplists:get_value(<<"id">>, Result3),
     {ok, {204, _}} = kippelr:delete_clip_comment(Id, Id2),
     {ok, {204, _}} = kippelr:delete_clip(Id).
+
+notifications(_) ->
+    {ok, {200, _}} = kippelr:notifications(),
+    {ok, {200, _}} = kippelr:mark_notifications_as_read().
+
+gls(_) ->
+    {ok, {200, _}} = kippelr:get_lists().
+
+gl(_) ->
+    {ok, {200, _}} = kippelr:get_list(inbox).
+
+glcs(_) ->
+    {ok, {200, _}} = kippelr:get_list_clips(inbox).

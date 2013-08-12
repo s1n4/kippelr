@@ -31,8 +31,9 @@ groups() ->
 
 init_per_group(clips, Config) ->
     kippelr:start(),
+    Username = os:getenv("KIPPT_USER"),
     Token = os:getenv("KIPPT_TOKEN"),
-    ok = kippelr:auth({token_auth, {"s1n4", Token}}),
+    ok = kippelr:auth({token_auth, {Username, Token}}),
     Config;
 init_per_group(_, Config) ->
     kippelr:start(),
@@ -55,8 +56,9 @@ token_auth(_) ->
     true = kippelr:is_authenticated().
 
 account_info(_) ->
+    Username = os:getenv("KIPPT_USER"),
     Token = os:getenv("KIPPT_TOKEN"),
-    ok = kippelr:auth({token_auth, {"s1n4", Token}}),
+    ok = kippelr:auth({token_auth, {Username, Token}}),
     {ok, {200, _}} = kippelr:account().
 
 gcs(_) ->

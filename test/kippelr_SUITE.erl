@@ -17,6 +17,10 @@
 -export([gc/1]).
 -export([gcc/1]).
 -export([gcl/1]).
+-export([fav/1]).
+-export([unfav/1]).
+-export([like/1]).
+-export([unlike/1]).
 
 
 all() ->
@@ -26,7 +30,7 @@ groups() ->
     [
      {auth, [], [basic_auth, is_auth, token_auth]},
      {account, [], [account_info]},
-     {clips, [], [gcs, gcsfs, gcsf, gc, gcc, gcl]}
+     {clips, [], [gcs, gcsfs, gcsf, gc, gcc, gcl, fav, unfav, like, unlike]}
     ].
 
 init_per_group(clips, Config) ->
@@ -78,3 +82,15 @@ gcc(_) ->
 
 gcl(_) ->
     {ok, {200, _}} = kippelr:get_clip_likes(16332396).
+
+fav(_) ->
+    {ok, {200, _}} = kippelr:favorite(16332396).
+
+unfav(_) ->
+    {ok, {200, _}} = kippelr:unfavorite(16332396).
+
+like(_) ->
+    {ok, {400, _}} = kippelr:like(16332396).
+
+unlike(_) ->
+    {ok, {400, _}} = kippelr:unlike(16332396).

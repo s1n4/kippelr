@@ -8,7 +8,6 @@
 
 %% test cases
 -export([basic_auth/1]).
--export([is_auth/1]).
 -export([token_auth/1]).
 -export([account_info/1]).
 -export([gcs/1]).
@@ -26,6 +25,9 @@
 -export([gls/1]).
 -export([gl/1]).
 -export([glcs/1]).
+-export([ifl/1]).
+-export([fl/1]).
+-export([ufl/1]).
 
 
 all() ->
@@ -36,22 +38,19 @@ all() ->
 
 groups() ->
     [
-     {auth, [], [basic_auth, is_auth, token_auth]},
+     {auth, [], [basic_auth, token_auth]},
      {account, [], [account_info]},
      {clips, [], [gcs, gcsfs, gcsf, gc, gcc, gcl, fav, unfav, like, unlike,
                   c_crud]},
      {notifications, [], [notifications]},
-     {lists, [], [gls, gl, glcs]}
+     {lists, [], [gls, gl, glcs, ifl, fl, ufl]}
     ].
 
-init_per_group(clips, Config) ->
+init_per_group(_, Config) ->
     kippelr:start(),
     Username = os:getenv("KIPPT_USER"),
     Token = os:getenv("KIPPT_TOKEN"),
     ok = kippelr:auth({token_auth, {Username, Token}}),
-    Config;
-init_per_group(_, Config) ->
-    kippelr:start(),
     Config.
 
 end_per_group(_, _Config) ->
@@ -61,9 +60,6 @@ basic_auth(_) ->
     ok = kippelr:auth({basic_auth, {"username", "password"}}),
     false = kippelr:is_authenticated().
 
-is_auth(_) ->
-    false = kippelr:is_authenticated().
-
 token_auth(_) ->
     Username = os:getenv("KIPPT_USER"),
     Token = os:getenv("KIPPT_TOKEN"),
@@ -71,9 +67,6 @@ token_auth(_) ->
     true = kippelr:is_authenticated().
 
 account_info(_) ->
-    Username = os:getenv("KIPPT_USER"),
-    Token = os:getenv("KIPPT_TOKEN"),
-    ok = kippelr:auth({token_auth, {Username, Token}}),
     {ok, {200, _}} = kippelr:account().
 
 gcs(_) ->
@@ -135,3 +128,12 @@ gl(_) ->
 
 glcs(_) ->
     {ok, {200, _}} = kippelr:get_list_clips(inbox).
+
+ifl(_) ->
+    {ok, {200, _}} = kippelr:is_following_list(inbox).
+
+fl(_) ->
+    {ok, {200, _}} = kippelr:follow_list(inbox).
+
+ufl(_) ->
+    {ok, {200, _}} = kippelr:unfollow_list(inbox).

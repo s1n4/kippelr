@@ -252,7 +252,7 @@ get_user_clips(Id) ->
 %% gen_server
 init([]) ->
     State = #state{headers=[]},
-    {ok, State, ?TIMEOUT}.
+    {ok, State}.
 
 handle_call(terminate, _From, State) ->
     {stop, normal, ok, State};

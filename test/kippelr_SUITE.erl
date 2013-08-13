@@ -163,9 +163,9 @@ l_crud(_) ->
     {ok, {204, _}} = kippelr:delete_list(Id).
 
 gu(_) ->
-    {ok, {200, Result}} = kippelr:get_user("jorilallo"),
+    {ok, {200, Result}} = kippelr:get_user("s1n4"),
     Id = proplists:get_value(<<"id">>, Result),
     {ok, {200, Result}} = kippelr:get_user(Id).
 
 gucs(_) ->
-    {ok, {200, _}} = kippelr:get_user_clips("jorilallo").
+    {ok, {200, _}} = kippelr:get_user_clips("s1n4").

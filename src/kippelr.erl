@@ -40,6 +40,7 @@
 -export([follow_list/1]).
 -export([unfollow_list/1]).
 -export([modify_list/2]).
+-export([delete_list/1]).
 
 -export([upgrade/0]).
 
@@ -230,6 +231,10 @@ modify_list(Id, Object) ->
             {content, Object}
            ],
     gen_server:call(?MODULE, {put, Data}, ?TIMEOUT).
+
+%% @doc delete a list
+delete_list(Id) ->
+    gen_server:call(?MODULE, {delete, [lists, Id]}, ?TIMEOUT).
 
 
 %% gen_server

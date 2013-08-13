@@ -144,4 +144,5 @@ l_crud(_) ->
     List1 = "{\"title\":\"kippelr\",\"description\":\"test1...\"}",
     {ok, {201, Result}} = kippelr:create_list(List),
     Id = proplists:get_value(<<"id">>, Result),
-    {ok, {200, Result1}} = kippelr:modify_list(Id, List1).
+    {ok, {200, Result1}} = kippelr:modify_list(Id, List1),
+    {ok, {204, _}} = kippelr:delete_list(Id).

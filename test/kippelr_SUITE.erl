@@ -28,6 +28,7 @@
 -export([ifl/1]).
 -export([fl/1]).
 -export([ufl/1]).
+-export([l_crud/1]).
 
 
 all() ->
@@ -43,7 +44,7 @@ groups() ->
      {clips, [], [gcs, gcsfs, gcsf, gc, gcc, gcl, fav, unfav, like, unlike,
                   c_crud]},
      {notifications, [], [notifications]},
-     {lists, [], [gls, gl, glcs, ifl, fl, ufl]}
+     {lists, [], [gls, gl, glcs, ifl, fl, ufl, l_crud]}
     ].
 
 init_per_group(_, Config) ->
@@ -137,3 +138,10 @@ fl(_) ->
 
 ufl(_) ->
     {ok, {200, _}} = kippelr:unfollow_list(inbox).
+
+l_crud(_) ->
+    List = "{\"title\":\"kippelr\",\"description\":\"test..\"}",
+    List1 = "{\"title\":\"kippelr\",\"description\":\"test1...\"}",
+    {ok, {201, Result}} = kippelr:create_list(List),
+    Id = proplists:get_value(<<"id">>, Result),
+    {ok, {200, Result1}} = kippelr:modify_list(Id, List1).

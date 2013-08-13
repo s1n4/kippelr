@@ -60,7 +60,7 @@ end_per_group(_, _Config) ->
     kippelr:stop().
 
 init_per_testcase(_, Config) ->
-    timer:sleep(2000),
+    ct:sleep(2000),
     Config.
 
 end_per_testcase(_, _Config) ->
@@ -120,7 +120,7 @@ c_crud(_) ->
     {ok, {200, Result1}} = kippelr:modify_clip(Id, Clip1),
     Id1 = proplists:get_value(<<"id">>, Result1),
     Id = Id1,
-    timer:sleep(2000),
+    ct:sleep(2000),
     {ok, {200, Result2}} = kippelr:get_clip(Id1),
     {ok, {201, Result3}} = kippelr:create_comment(Id, Comment),
     Id2 = proplists:get_value(<<"id">>, Result3),
@@ -153,7 +153,7 @@ l_crud(_) ->
     List = "{\"title\":\"kippelr\",\"description\":\"test..\"}",
     List1 = "{\"title\":\"kippelr\",\"description\":\"test1...\"}",
     {ok, {201, Result}} = kippelr:create_list(List),
-    timer:sleep(2000),
+    ct:sleep(2000),
     Id = proplists:get_value(<<"id">>, Result),
     {ok, {200, Result1}} = kippelr:modify_list(Id, List1),
     {ok, {204, _}} = kippelr:delete_list(Id).

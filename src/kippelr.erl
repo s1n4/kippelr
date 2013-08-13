@@ -42,6 +42,7 @@
 -export([modify_list/2]).
 -export([delete_list/1]).
 -export([get_user/1]).
+-export([get_user_clips/1]).
 
 -export([upgrade/0]).
 
@@ -242,6 +243,10 @@ delete_list(Id) ->
 %% @doc get public user data based on user's ID or username
 get_user(Id) ->
     gen_server:call(?MODULE, {get, [users, Id]}, ?TIMEOUT).
+
+%% @doc get an user's public clips
+get_user_clips(Id) ->
+    gen_server:call(?MODULE, {get, [users, Id, clips]}, ?TIMEOUT).
 
 
 %% gen_server

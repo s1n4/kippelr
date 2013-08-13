@@ -32,6 +32,7 @@
 -export([ufl/1]).
 -export([l_crud/1]).
 -export([gu/1]).
+-export([gucs/1]).
 
 
 all() ->
@@ -49,7 +50,7 @@ groups() ->
                   c_crud]},
      {notifications, [], [notifications]},
      {lists, [], [gls, gl, glcs, ifl, fl, ufl, l_crud]},
-     {users, [], {gu}}
+     {users, [], [gu, gucs]}
     ].
 
 init_per_group(_, Config) ->
@@ -162,6 +163,9 @@ l_crud(_) ->
     {ok, {204, _}} = kippelr:delete_list(Id).
 
 gu(_) ->
-    {ok, {200, Result}} = kippelr:get_user(s1n4),
+    {ok, {200, Result}} = kippelr:get_user("jorilallo"),
     Id = proplists:get_value(<<"id">>, Result),
     {ok, {200, Result}} = kippelr:get_user(Id).
+
+gucs(_) ->
+    {ok, {200, _}} = kippelr:get_user_clips("jorilallo").

@@ -67,7 +67,8 @@ stop() ->
 
 %% @doc authentication
 %% @spec auth(Options :: authentication()) -> ok
-%% authentication() = {basic_auth, {username(), password()}} | {token_auth, {username(), api_token()}}
+%% authentication() = {basic_auth, {username(), password()}} |
+%%                    {token_auth, {username(), api_token()}}
 %% username() = string()
 %% password() = string()
 %% api_token() = string()
@@ -112,7 +113,8 @@ delete_clip(Id) ->
 
 %% @doc delete a comment
 delete_clip_comment(ClipId, CommentId) ->
-    gen_server:call(?MODULE, {delete, [clips, ClipId, comments, CommentId]}, ?TIMEOUT).
+    gen_server:call(?MODULE, {delete, [clips, ClipId, comments, CommentId]},
+                    ?TIMEOUT).
 
 %% @doc favorite a clip
 favorite(Id) ->
@@ -252,7 +254,8 @@ handle_call(is_authenticated, _From, State) ->
            end,
     {reply, Resp, State};
 
-handle_call({Method, Segment}, _From, State) when Method =:= get; Method =:= delete ->
+handle_call({Method, Segment}, _From, State) when Method =:= get;
+                                                  Method =:= delete ->
     {Status, _, Body} = request(Method, {url(Segment), headers(State)}),
     {reply, {ok, {Status, Body}}, State};
 
@@ -260,8 +263,10 @@ handle_call({Method, Data}, _From, State) ->
     {Endpoint, Id} = proplists:get_value(endpoint, Data),
     {Collection, CollectionId} = proplists:get_value(collection, Data),
     Content = proplists:get_value(content, Data),
-    {Status, _, Body} = request(Method, {url([Endpoint, Id, Collection, CollectionId]),
-                                       headers(State), "application/json", Content}),
+    {Status, _, Body} = request(Method, {url([Endpoint,
+                                              Id, Collection, CollectionId]),
+                                         headers(State), "application/json",
+                                         Content}),
     {reply, {ok, {Status, Body}}, State}.
 
 handle_cast({basic_auth, {Username, Password}}, State) ->
@@ -270,7 +275,8 @@ handle_cast({basic_auth, {Username, Password}}, State) ->
     {noreply, NewState};
 
 handle_cast({token_auth, {Username, Token}}, State) ->
-    NewState = State#state{headers=[{"X-Kippt-Username", Username}, {"X-Kippt-API-Token", Token}]},
+    NewState = State#state{headers=[{"X-Kippt-Username", Username},
+                                    {"X-Kippt-API-Token", Token}]},
     {noreply, NewState}.
 
 handle_info(_Msg, State) ->
@@ -288,7 +294,11 @@ url([]) ->
     [];
 url(List) ->
     %% remove empty atoms
-    List1 = lists:filter(fun(V) -> if V == '' -> false; true -> true end end, List),
+    List1 = lists:filter(fun(V) ->
+                                 if V == '' -> false;
+                                    true -> true
+                                 end
+                         end, List),
     url(List1, []).
 
 url([], Acc) ->

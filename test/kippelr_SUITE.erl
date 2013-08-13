@@ -31,12 +31,14 @@
 -export([fl/1]).
 -export([ufl/1]).
 -export([l_crud/1]).
+-export([gu/1]).
 
 
 all() ->
     [
      {group, auth}, {group, account}, {group, clips}, {group, notifications},
-     {group, lists}
+     {group, lists},
+     {group, users}
     ].
 
 groups() ->
@@ -46,7 +48,8 @@ groups() ->
      {clips, [], [gcs, gcsfs, gcsf, gc, gcc, gcl, fav, unfav, like, unlike,
                   c_crud]},
      {notifications, [], [notifications]},
-     {lists, [], [gls, gl, glcs, ifl, fl, ufl, l_crud]}
+     {lists, [], [gls, gl, glcs, ifl, fl, ufl, l_crud]},
+     {users, [], {gu}}
     ].
 
 init_per_group(_, Config) ->
@@ -157,3 +160,8 @@ l_crud(_) ->
     Id = proplists:get_value(<<"id">>, Result),
     {ok, {200, Result1}} = kippelr:modify_list(Id, List1),
     {ok, {204, _}} = kippelr:delete_list(Id).
+
+gu(_) ->
+    {ok, {200, Result}} = kippelr:get_user(s1n4),
+    Id = proplists:get_value(<<"id">>, Result),
+    {ok, {200, Result}} = kippelr:get_user(Id).

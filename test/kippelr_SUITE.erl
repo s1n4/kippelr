@@ -201,3 +201,6 @@ fwu(_) ->
 
 unfwu(_) ->
     {ok, {200, _}} = kippelr:unfollow_user("s1n4").
+
+scs(_) ->
+    {ok, {200, _}} = kippelr:search_clips("erlang library for the kippt").

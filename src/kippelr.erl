@@ -21,6 +21,7 @@
 -export([get_clip/1]).
 -export([get_clip_comments/1]).
 -export([get_clip_likes/1]).
+-export([search_clips/1]).
 -export([delete_clip/1]).
 -export([delete_clip_comment/2]).
 -export([favorite/1]).
@@ -116,6 +117,12 @@ get_clip_comments(Id) ->
 %% @doc get a clip's likes
 get_clip_likes(Id) ->
     gen_server:call(?MODULE, {get, [clips, Id, likes]}, ?TIMEOUT).
+
+%% @doc search for clips
+search_clips(Params) ->
+    Params1 = re:replace(Params, " ", "+", [global, {return, list}]),
+    Q = lists:concat(["?q=", Params1]),
+    gen_server:call(?MODULE, {get, [clips, search, Q]}, ?TIMEOUT).
 
 %% @doc delete a clip
 delete_clip(Id) ->

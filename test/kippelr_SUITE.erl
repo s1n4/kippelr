@@ -33,6 +33,7 @@
 -export([l_crud/1]).
 -export([gu/1]).
 -export([gucs/1]).
+-export([gufs/1]).
 
 
 all() ->
@@ -50,7 +51,7 @@ groups() ->
                   c_crud]},
      {notifications, [], [notifications]},
      {lists, [], [gls, gl, glcs, ifl, fl, ufl, l_crud]},
-     {users, [], [gu, gucs]}
+     {users, [], [gu, gucs, gufs]}
     ].
 
 init_per_group(_, Config) ->
@@ -169,3 +170,6 @@ gu(_) ->
 
 gucs(_) ->
     {ok, {200, _}} = kippelr:get_user_clips("s1n4").
+
+gufs(_) ->
+    {ok, {200, _}} = kippelr:get_user_favorites("s1n4").

@@ -61,7 +61,7 @@ groups() ->
      {notifications, [], [notifications]},
      {lists, [], [gls, gl, glcs, ifl, fl, ufl, l_crud]},
      {users, [], [gu, gucs, gufs, guls, gufwls, gupls, gupl, ifu, fwu, unfwu,
-                 sus]}
+                  sus]}
     ].
 
 init_per_group(_, Config) ->

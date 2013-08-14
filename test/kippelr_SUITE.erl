@@ -197,7 +197,7 @@ ifu(_) ->
     {ok, {400, _}} = kippelr:is_following_user("s1n4").
 
 fwu(_) ->
-    {ok, {400, _}} = kippelr:follow_user("s1n4").
+    {ok, {200, _}} = kippelr:follow_user("s1n4").
 
 unfwu(_) ->
-    {ok, {400, _}} = kippelr:unfollow_user("s1n4").
+    {ok, {200, _}} = kippelr:unfollow_user("s1n4").

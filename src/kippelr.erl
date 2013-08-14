@@ -48,6 +48,7 @@
 -export([get_user_followers/1]).
 -export([get_user_lists/1]).
 -export([get_user_list/2]).
+-export([is_following_user/1]).
 
 -export([upgrade/0]).
 
@@ -201,7 +202,7 @@ get_list(Id) ->
 get_list_clips(Id) ->
     gen_server:call(?MODULE, {get, [lists, Id, clips]}, ?TIMEOUT).
 
-%% @doc get information about a relationship to a list.
+%% @doc get information about a relationship to a list
 is_following_list(Id) ->
     gen_server:call(?MODULE, {get, [lists, Id, relationship]}, ?TIMEOUT).
 
@@ -272,6 +273,10 @@ get_user_lists(Id) ->
 %% @doc get an user's public list
 get_user_list(UserId, ListId) ->
     gen_server:call(?MODULE, {get, [users, UserId, lists, ListId]}, ?TIMEOUT).
+
+%% @doc get information about a relationship to another user
+is_following_user(Id) ->
+    gen_server:call(?MODULE, {get, [users, Id, relationship]}, ?TIMEOUT).
 
 
 %% gen_server

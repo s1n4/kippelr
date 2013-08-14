@@ -41,13 +41,15 @@
 -export([ifu/1]).
 -export([fwu/1]).
 -export([unfwu/1]).
+-export([scs/1]).
+-export([sus/1]).
 
 
 all() ->
     [
-     {group, auth}, {group, account}, {group, clips}, {group, notifications},
-     {group, lists},
-     {group, users}
+     {group, auth}, {group, account},
+     {group, clips}, {group, notifications},
+     {group, lists}, {group, users}
     ].
 
 groups() ->
@@ -55,10 +57,11 @@ groups() ->
      {auth, [], [basic_auth, token_auth]},
      {account, [], [account_info]},
      {clips, [], [gcs, gcsfs, gcsf, gc, gcc, gcl, fav, unfav, like, unlike,
-                  c_crud]},
+                  c_crud, scs]},
      {notifications, [], [notifications]},
      {lists, [], [gls, gl, glcs, ifl, fl, ufl, l_crud]},
-     {users, [], [gu, gucs, gufs, guls, gufwls, gupls, gupl, ifu, fwu, unfwu]}
+     {users, [], [gu, gucs, gufs, guls, gufwls, gupls, gupl, ifu, fwu, unfwu,
+                 sus]}
     ].
 
 init_per_group(_, Config) ->
@@ -204,3 +207,6 @@ unfwu(_) ->
 
 scs(_) ->
     {ok, {200, _}} = kippelr:search_clips("erlang library for the kippt").
+
+sus(_) ->
+    {ok, {200, _}} = kippelr:search_users("Sina Samavati").

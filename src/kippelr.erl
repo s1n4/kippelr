@@ -52,6 +52,7 @@
 -export([is_following_user/1]).
 -export([follow_user/1]).
 -export([unfollow_user/1]).
+-export([search_users/1]).
 
 -export([upgrade/0]).
 
@@ -304,6 +305,12 @@ unfollow_user(Id) ->
             {content, "{\"action\":\"unfollow\"}"}
            ],
     gen_server:call(?MODULE, {post, Data}, ?TIMEOUT).
+
+%% @doc search for users
+search_users(Params) ->
+    Params1 = re:replace(Params, " ", "+", [global, {return, list}]),
+    Q = lists:concat(["?q=", Params1]),
+    gen_server:call(?MODULE, {get, [users, search, Q]}, ?TIMEOUT).
 
 
 %% gen_server

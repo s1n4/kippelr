@@ -37,6 +37,7 @@
 -export([guls/1]).
 -export([gufwls/1]).
 -export([gupls/1]).
+-export([gupl/1]).
 
 
 all() ->
@@ -54,7 +55,7 @@ groups() ->
                   c_crud]},
      {notifications, [], [notifications]},
      {lists, [], [gls, gl, glcs, ifl, fl, ufl, l_crud]},
-     {users, [], [gu, gucs, gufs, guls, gufwls, gupls]}
+     {users, [], [gu, gucs, gufs, guls, gufwls, gupls, gupl]}
     ].
 
 init_per_group(_, Config) ->
@@ -185,3 +186,6 @@ gufwls(_) ->
 
 gupls(_) ->
     {ok, {200, _}} = kippelr:get_user_lists("s1n4").
+
+gupl(_) ->
+    {ok, {200, _}} = kippelr:get_user_list("s1n4", "erlang").

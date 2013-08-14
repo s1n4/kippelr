@@ -39,6 +39,8 @@
 -export([gupls/1]).
 -export([gupl/1]).
 -export([ifu/1]).
+-export([fwu/1]).
+-export([unfwu/1]).
 
 
 all() ->
@@ -56,7 +58,7 @@ groups() ->
                   c_crud]},
      {notifications, [], [notifications]},
      {lists, [], [gls, gl, glcs, ifl, fl, ufl, l_crud]},
-     {users, [], [gu, gucs, gufs, guls, gufwls, gupls, gupl, ifu]}
+     {users, [], [gu, gucs, gufs, guls, gufwls, gupls, gupl, ifu, fwu, unfwu]}
     ].
 
 init_per_group(_, Config) ->
@@ -193,3 +195,9 @@ gupl(_) ->
 
 ifu(_) ->
     {ok, {400, _}} = kippelr:is_following_user("s1n4").
+
+fwu(_) ->
+    {ok, {400, _}} = kippelr:follow_user("s1n4").
+
+unfwu(_) ->
+    {ok, {400, _}} = kippelr:unfollow_user("s1n4").

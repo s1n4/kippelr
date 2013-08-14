@@ -49,6 +49,8 @@
 -export([get_user_lists/1]).
 -export([get_user_list/2]).
 -export([is_following_user/1]).
+-export([follow_user/1]).
+-export([unfollow_user/1]).
 
 -export([upgrade/0]).
 
@@ -277,6 +279,24 @@ get_user_list(UserId, ListId) ->
 %% @doc get information about a relationship to another user
 is_following_user(Id) ->
     gen_server:call(?MODULE, {get, [users, Id, relationship]}, ?TIMEOUT).
+
+%% @doc follow an user
+follow_user(Id) ->
+    Data = [
+            {endpoint, {users, Id}},
+            {collection, {relationship, ''}},
+            {content, "{\"action\":\"follow\"}"}
+           ],
+    gen_server:call(?MODULE, {post, Data}, ?TIMEOUT).
+
+%% @doc unfollow an user
+unfollow_user(Id) ->
+    Data = [
+            {endpoint, {users, Id}},
+            {collection, {relationship, ''}},
+            {content, "{\"action\":\"unfollow\"}"}
+           ],
+    gen_server:call(?MODULE, {post, Data}, ?TIMEOUT).
 
 
 %% gen_server

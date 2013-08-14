@@ -35,6 +35,7 @@
 -export([gucs/1]).
 -export([gufs/1]).
 -export([guls/1]).
+-export([gufwls/1]).
 
 
 all() ->
@@ -52,7 +53,7 @@ groups() ->
                   c_crud]},
      {notifications, [], [notifications]},
      {lists, [], [gls, gl, glcs, ifl, fl, ufl, l_crud]},
-     {users, [], [gu, gucs, gufs, guls]}
+     {users, [], [gu, gucs, gufs, guls, gufwls]}
     ].
 
 init_per_group(_, Config) ->
@@ -177,3 +178,6 @@ gufs(_) ->
 
 guls(_) ->
     {ok, {200, _}} = kippelr:get_user_likes("s1n4").
+
+gufwls(_) ->
+    {ok, {200, _}} = kippelr:get_user_followers("s1n4").

@@ -44,6 +44,7 @@
 -export([get_user/1]).
 -export([get_user_clips/1]).
 -export([get_user_favorites/1]).
+-export([get_user_likes/1]).
 
 -export([upgrade/0]).
 
@@ -252,6 +253,10 @@ get_user_clips(Id) ->
 %% @doc get an user's public favorites
 get_user_favorites(Id) ->
     gen_server:call(?MODULE, {get, [users, Id, clips, favorites]}, ?TIMEOUT).
+
+%% @doc get an user's public likes
+get_user_likes(Id) ->
+    gen_server:call(?MODULE, {get, [users, Id, clips, likes]}, ?TIMEOUT).
 
 
 %% gen_server

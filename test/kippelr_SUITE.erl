@@ -137,7 +137,7 @@ c_crud(_) ->
     Id1 = proplists:get_value(<<"id">>, Result1),
     Id = Id1,
     ct:sleep(2000),
-    {ok, {200, Result2}} = kippelr:get_clip(Id1),
+    {ok, {200, _}} = kippelr:get_clip(Id1),
     {ok, {201, Result3}} = kippelr:create_comment(Id, Comment),
     Id2 = proplists:get_value(<<"id">>, Result3),
     {ok, {204, _}} = kippelr:delete_clip_comment(Id, Id2),
@@ -166,12 +166,12 @@ ufl(_) ->
     {ok, {200, _}} = kippelr:unfollow_list(inbox).
 
 l_crud(_) ->
-    List = "{\"title\":\"kippelr\",\"description\":\"test..\"}",
-    List1 = "{\"title\":\"kippelr\",\"description\":\"test1...\"}",
+    List = [{<<"title">>, <<"kippelr">>}, {<<"description">>, <<"test..">>}],
+    List1 = [{<<"title">>, <<"kippelr">>}, {<<"description">>, <<"test1...">>}],
     {ok, {201, Result}} = kippelr:create_list(List),
     ct:sleep(2000),
     Id = proplists:get_value(<<"id">>, Result),
-    {ok, {200, Result1}} = kippelr:modify_list(Id, List1),
+    {ok, {200, _}} = kippelr:modify_list(Id, List1),
     {ok, {204, _}} = kippelr:delete_list(Id).
 
 gu(_) ->

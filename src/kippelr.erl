@@ -1,6 +1,3 @@
-%% @author Sina Samavati
-%% @copyright 2013
-
 -module(kippelr).
 -behaviour(gen_server).
 
@@ -171,11 +168,10 @@ unlike(Id) ->
 %% @doc create a clip
 -spec create_clip(Clip :: json_term()) -> result().
 create_clip(Clip) ->
-    true = jsx:is_term(Clip),
     Data = [
             {endpoint, {clips, ''}},
             {collection, {'', ''}},
-            {content, jsx:encode(Clip)}
+            {content, binary_to_list(jsx:encode(Clip))}
            ],
     gen_server:call(?MODULE, {post, Data}, ?TIMEOUT).
 
@@ -185,7 +181,7 @@ create_comment(ClipId, Comment) ->
     Data = [
             {endpoint, {clips, ClipId}},
             {collection, {comments, ''}},
-            {content, jsx:encode(Comment)}
+            {content, binary_to_list(jsx:encode(Clip))}
            ],
     gen_server:call(?MODULE, {post, Data}, ?TIMEOUT).
 
@@ -195,7 +191,7 @@ modify_clip(Id, Clip) ->
     Data = [
             {endpoint, {clips, Id}},
             {collection, {'', ''}},
-            {content, Clip}
+            {content, jsx:encode(Comment)}
            ],
     gen_server:call(?MODULE, {put, Data}, ?TIMEOUT).
 

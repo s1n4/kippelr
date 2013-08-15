@@ -181,7 +181,7 @@ create_comment(ClipId, Comment) ->
     Data = [
             {endpoint, {clips, ClipId}},
             {collection, {comments, ''}},
-            {content, binary_to_list(jsx:encode(Clip))}
+            {content, binary_to_list(jsx:encode(Comment))}
            ],
     gen_server:call(?MODULE, {post, Data}, ?TIMEOUT).
 
@@ -191,7 +191,7 @@ modify_clip(Id, Clip) ->
     Data = [
             {endpoint, {clips, Id}},
             {collection, {'', ''}},
-            {content, jsx:encode(Comment)}
+            {content, binary_to_list(jsx:encode(Clip))}
            ],
     gen_server:call(?MODULE, {put, Data}, ?TIMEOUT).
 

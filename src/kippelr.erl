@@ -225,11 +225,12 @@ is_following_list(Id) ->
     gen_server:call(?MODULE, {get, [lists, Id, relationship]}, ?TIMEOUT).
 
 %% @doc create a list
+-spec create_list(Object :: json_term()) -> result().
 create_list(Object) ->
     Data = [
             {endpoint, {lists, ''}},
             {collection, {'', ''}},
-            {content, Object}
+            {content, to_json(Object)}
            ],
     gen_server:call(?MODULE, {post, Data}, ?TIMEOUT).
 
@@ -252,11 +253,12 @@ unfollow_list(Id) ->
     gen_server:call(?MODULE, {post, Data}, ?TIMEOUT).
 
 %% @doc modify a list
+-spec modify_list(Id :: id(), Object :: json_term()) -> result().
 modify_list(Id, Object) ->
     Data = [
             {endpoint, {lists, Id}},
             {collection, {'', ''}},
-            {content, Object}
+            {content, to_json(Object)}
            ],
     gen_server:call(?MODULE, {put, Data}, ?TIMEOUT).
 

@@ -1,3 +1,6 @@
+%% @author Sina Samavati
+%% @copyright 2013
+
 -module(kippelr).
 -behaviour(gen_server).
 
@@ -187,6 +190,7 @@ create_comment(ClipId, Comment) ->
     gen_server:call(?MODULE, {post, Data}, ?TIMEOUT).
 
 %% @doc modify a clip
+-spec modify_clip(Id :: id(), Clip :: json_term()) -> result().
 modify_clip(Id, Clip) ->
     Data = [
             {endpoint, {clips, Id}},

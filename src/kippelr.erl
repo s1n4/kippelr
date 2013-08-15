@@ -64,6 +64,7 @@
 -type status() :: 200 | 201 | 204 | 400 | 401 | 404.
 -type json_term() :: jsx:json_term().
 -type id() :: integer() | string().
+-type result() :: {ok, {status(), json_term()}}.
 
 
 %% @doc start kippelr
@@ -165,7 +166,7 @@ unlike(Id) ->
     gen_server:call(?MODULE, {delete, [clips, Id, likes]}, ?TIMEOUT).
 
 %% @doc create a clip
--spec create_clip(Clip :: json_term()) -> {ok, {status(), json_term()}}.
+-spec create_clip(Clip :: json_term()) -> result().
 create_clip(Clip) ->
     true = jsx:is_term(Clip),
     Data = [
@@ -176,8 +177,7 @@ create_clip(Clip) ->
     gen_server:call(?MODULE, {post, Data}, ?TIMEOUT).
 
 %% @doc create a new comment for clip
--spec create_comment(ClipId :: id(), Comment :: json_term()) ->
-                            {ok, {status(), json_term()}}.
+-spec create_comment(ClipId :: id(), Comment :: json_term()) -> result().
 create_comment(ClipId, Comment) ->
     Data = [
             {endpoint, {clips, ClipId}},

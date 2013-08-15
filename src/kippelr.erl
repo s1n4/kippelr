@@ -171,7 +171,7 @@ create_clip(Clip) ->
     Data = [
             {endpoint, {clips, ''}},
             {collection, {'', ''}},
-            {content, binary_to_list(jsx:encode(Clip))}
+            {content, to_json(Clip)}
            ],
     gen_server:call(?MODULE, {post, Data}, ?TIMEOUT).
 
@@ -181,7 +181,7 @@ create_comment(ClipId, Comment) ->
     Data = [
             {endpoint, {clips, ClipId}},
             {collection, {comments, ''}},
-            {content, binary_to_list(jsx:encode(Comment))}
+            {content, to_json(Comment)}
            ],
     gen_server:call(?MODULE, {post, Data}, ?TIMEOUT).
 
@@ -191,7 +191,7 @@ modify_clip(Id, Clip) ->
     Data = [
             {endpoint, {clips, Id}},
             {collection, {'', ''}},
-            {content, binary_to_list(jsx:encode(Clip))}
+            {content, to_json(Clip)}
            ],
     gen_server:call(?MODULE, {put, Data}, ?TIMEOUT).
 
@@ -397,6 +397,9 @@ parse_resp(Resp) ->
                true -> Body
             end,
     {Status, Msg, Body1}.
+
+to_json(Source) ->
+    binary_to_list(jsx:encode(Source)).
 
 request(Method, Request) ->
     request(Method, Request, []).

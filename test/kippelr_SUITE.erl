@@ -125,11 +125,12 @@ unlike(_) ->
     {ok, {400, _}} = kippelr:unlike(16332396).
 
 c_crud(_) ->
-    Clip = "{\"url\":\"https://github.com/s1n4/kippelr\","
-        "\"notes\":\"Erlang library for the Kippt API\"}",
-    Clip1 = "{\"url\":\"https://github.com/s1n4/kippelr\","
-        "\"notes\":\"Erlang library for the Kippt API.\"}",
-    Comment = "{\"body\":\"test...\"}",
+    Clip = [{<<"url">>, <<"https://github.com/s1n4/kippelr">>}],
+    Clip1 = [
+             {<<"url">>, <<"https://github.com/s1n4/kippelr">>},
+             {<<"notes">>, <<"Erlang library for the Kippt API">>}
+            ],
+    Comment = [{<<"body">>, <<"test...">>}],
     {ok, {201, Result}} = kippelr:create_clip(Clip),
     Id = proplists:get_value(<<"id">>, Result),
     {ok, {200, Result1}} = kippelr:modify_clip(Id, Clip1),

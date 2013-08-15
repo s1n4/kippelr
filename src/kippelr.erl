@@ -175,11 +175,13 @@ create_clip(Clip) ->
     gen_server:call(?MODULE, {post, Data}, ?TIMEOUT).
 
 %% @doc create a new comment for clip
+-spec create_comment(ClipId :: integer() | string(), Comment :: json_term()) ->
+                            {ok, {status(), json_term()}}.
 create_comment(ClipId, Comment) ->
     Data = [
             {endpoint, {clips, ClipId}},
             {collection, {comments, ''}},
-            {content, Comment}
+            {content, jsx:encode(Comment)}
            ],
     gen_server:call(?MODULE, {post, Data}, ?TIMEOUT).
 

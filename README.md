@@ -95,7 +95,7 @@ true
 
 ## Index
   * [Data types](#Data-types)
-    - [json_term()](https://github.com/talentdeficit/jsx#json_term)
+    - [json_term()](#json_term)
     - [status()](#status)
     - [result()](#result)
   * [Authentication](#Authentication)
@@ -110,6 +110,19 @@ true
 
 
 ### Data types
+
+#### json_term() ([jsx:json_term()](https://github.com/talentdeficit/jsx))
+
+```erlang
+json_term() = [json_term()]
+    | [{binary() | atom(), json_term()}]
+    | true
+    | false
+    | null
+    | integer()
+    | float()
+    | binary()
+```
 
 #### status()
 

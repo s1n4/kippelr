@@ -479,3 +479,21 @@ delete a list
 ```erlang
 delete_list(ListId :: id()) -> result()
 ```
+
+### notifications
+
+#### notifications/0
+
+get latest notifications
+
+```erlang
+notifications() -> result()
+```
+
+#### mark_notifications_as_read/0
+
+mark notifications as read
+
+```erlang
+mark_notifications_as_read() -> result()
+```

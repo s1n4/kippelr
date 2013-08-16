@@ -113,12 +113,12 @@ true
 
 #### status()
 
-```
+```erlang
 status() = 200 | 201 | 204 | 400 | 401 | 404
 ```
 
 #### result()
 
-```
+```erlang
 result() = {ok, {status(), json_term()}}
 ```

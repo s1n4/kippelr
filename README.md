@@ -30,7 +30,7 @@ true
        {<<"objects">>, ...}]}
 4> Clip = [{<<"url">>, <<"https://github.com/s1n4/kippelr">>}].
 [{<<"url">>,<<"https://github.com/s1n4/kippelr">>}]
-5> {ok, {201, _}} = kippelr:create_clip(Clip).
+5> {ok, {201, Clip1}} = kippelr:create_clip(Clip).
 {ok,{201,
      [{<<"via">>,null},
       {<<"saves">>,[{<<"count">>,0},{<<"data">>,[]}]},
@@ -61,5 +61,34 @@ true
       {<<"url">>,<<"https://github.com/s1n4/kipp"...>>},
       {<<"notes">>,null},
       {<<"list">>,<<"/api/lists/453505/">>},
-      {<<"resource_uri">>,<<"/api/clips/16449"...>>}]}}.
+      {<<"resource_uri">>,<<"/api/clips/16449"...>>}]}}
+6> ClipId = proplists:get_value(<<"id">>, Clip1).
+16449765
+7> Comment = [{<<"body">>, <<"comment goes here">>}].
+[{<<"body">>,<<"comment goes here">>}]
+8> kippelr:create_comment(ClipId, Comment).
+{ok,{201,
+     [{<<"body">>,<<"comment goes here">>},
+      {<<"created">>,1376638144},
+      {<<"id">>,14663},
+      {<<"resource_uri">>,
+       <<"/api/clips/16449765/comments/14663/">>},
+      {<<"user">>,
+       [{<<"username">>,<<"s1n4">>},
+        {<<"bio">>,
+         <<"Ruby, Python, JS and Erlang for the rest of my time.\r\nI "...>>},
+        {<<"app_url">>,<<"/s1n4">>},
+        {<<"avatar_url">>,
+         <<"https://d19weqihs4yh5u.cloudfront.net/avatars/db"...>>},
+        {<<"twitter">>,<<"sinasamavati">>},
+        {<<"id">>,99157},
+        {<<"github">>,<<"s1n4">>},
+        {<<"website_url">>,<<>>},
+        {<<"full_name">>,<<"Sina Samavati">>},
+        {<<"dribbble">>,<<>>},
+        {<<"counts">>,[{<<"follows">>,-5},{<<"followed"...>>,-5}]},
+        {<<"is_pro">>,false},
+        {<<"resource_uri">>,<<"/api/users/9"...>>}]}]}}
+9> kippelr:delete_clip(ClipId).
+{ok,{204,[]}}
 ```

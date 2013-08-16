@@ -95,8 +95,9 @@ true
 
 ## Index
   * [Data types](#Data-types)
-    - [json_term()](#json_term)
     - [status()](#status)
+    - [json_term()](#json_term)
+    - [id()](#id)
     - [result()](#result)
   * [Authentication](#Authentication)
     - [basic auth](#basic-auth)
@@ -111,7 +112,14 @@ true
 
 ### Data types
 
-#### json_term() ([jsx:json_term()](https://github.com/talentdeficit/jsx))
+#### status()
+
+```erlang
+status() = 200 | 201 | 204 | 400 | 401 | 404
+```
+
+#### json_term()
+> [jsx:json_term()](https://github.com/talentdeficit/jsx#json_term)
 
 ```erlang
 json_term() = [json_term()]
@@ -124,14 +132,28 @@ json_term() = [json_term()]
     | binary()
 ```
 
-#### status()
+#### id()
 
 ```erlang
-status() = 200 | 201 | 204 | 400 | 401 | 404
+id() = integer() | string()
 ```
 
 #### result()
 
 ```erlang
 result() = {ok, {status(), json_term()}}
+```
+
+### Authentication
+
+#### basic auth
+
+```erlang
+kippelr:auth({basic_auth, {"username", "password"}})
+```
+
+#### api token
+
+```erlang
+kippelr:auth({token_auth, {"username", "api_token"}}).
 ```

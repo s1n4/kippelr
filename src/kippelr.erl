@@ -65,6 +65,11 @@
 -type json_term() :: jsx:json_term().
 -type id() :: integer() | string().
 -type result() :: {ok, {status(), json_term()}}.
+-type username() :: string().
+-type password() :: string().
+-type api_token() :: string().
+-type authentication() :: {basic_auth, {username(), password()}}
+                        | {token_auth, {username(), api_token()}}.
 
 
 %% @doc start kippelr
@@ -83,12 +88,7 @@ stop() ->
     gen_server:call(?MODULE, terminate).
 
 %% @doc authentication
-%% @spec auth(Options :: authentication()) -> ok
-%% authentication() = {basic_auth, {username(), password()}} |
-%%                    {token_auth, {username(), api_token()}}
-%% username() = string()
-%% password() = string()
-%% api_token() = string()
+-spec auth(Options :: authentication()) -> ok.
 auth(Options) ->
     gen_server:cast(?MODULE, Options).
 

@@ -403,3 +403,79 @@ modify a clip
 ```erlang
 modify_clip(ClipId :: integer(), Clip :: json_term()) -> result()
 ```
+
+### lists
+
+#### get_lists/0
+
+get logged-in user's lists
+
+```erlang
+get_lists() -> result()
+```
+
+#### get_list/1
+
+get a list
+
+```erlang
+get_list(ListId :: id()) -> result()
+```
+
+#### get_list_clips/1
+
+get clips for a list
+
+```erlang
+get_list_clips(ListId :: id()) -> result()
+```
+
+#### is_following_list/1
+
+get information about a relationship to a list
+
+```erlang
+is_following_list(ListId :: id()) -> result()
+```
+
+#### follow_list/1
+
+follow a list
+
+```erlang
+follow_list(ListId :: id()) -> result()
+```
+
+#### unfollow_list/1
+
+unfollow a list
+
+```erlang
+unfollow_list(ListId :: id()) -> result()
+```
+
+#### create_list/1
+
+create a list
+
+```erlang
+create_list(ListObject :: json_term()) -> result()
+
+%% e.g create_list([{<<"title">>, <<"erlang">>}])
+```
+
+#### modify_list/1
+
+modify a list
+
+```erlang
+modify_list(ListObject :: json_term()) -> result()
+```
+
+#### delete_list/1
+
+delete a list
+
+```erlang
+delete_list(ListId :: id()) -> result()
+```

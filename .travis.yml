@@ -5,6 +5,6 @@ otp_release:
   - R14B04
 env:
   global:
-  - secure: SJZYIzDdRWKIxaIBCDuAjjXxNcoPdOPkbPilS+6thBxVjPgcI7ok9V8owJ5PlX3HmOM35McxF2pSSV0DOi8eXEEkzPE8WJLL1QY2F4KGXeSktm5L9S9PkdexTyCFyKw6nckFGMAB6kGhP2UYOPIA0rq4Wv+nUt0wtOauQVUh2h4=
   - secure: L9sQjEmJclWNmSH61y6a19AZkx2CeqCZvNbRdvL05G7ToTesZUhcXCZ1sPwf9slmCTUuKrBGhJ7sOMQA/31kbO6gGSMaHUhFLw6dLjofBkemS3U82R0cypJyGENO5ztbKCGcZf5ppd6PlEij/qKYT3ZzWuNlk1EBGocSuZvQHj8=
+  - secure: dckllkXSmjKARl1I4dIsfl6OxcBQiBX1w4kBhmAYmHEBaQUcaMCYvDdmOFVqNbcYDuiFs/c7UaiC/1yqZ8tOSdL9emqr/OnMA5/9Fa5tonphKfPpIpq0ZbMgOcRlCl5zcdimwJEWU80Gn81O3q7Hog09H0vsZgPDTCzx1+codYU=
 script: ./rebar compile && ./rebar ct skip_deps=true

@@ -92,3 +92,33 @@ true
 9> kippelr:delete_clip(ClipId).
 {ok,{204,[]}}
 ```
+
+## Index
+  * [Data types](#Data-types)
+    - [json_term()](https://github.com/talentdeficit/jsx#json_term)
+    - [status()](#status)
+    - [result()](#result)
+  * [Authentication](#Authentication)
+    - [basic auth](#basic-auth)
+    - [api token](#api-token)
+  * [Endpoints](#Endpoints)
+    - [account](#account)
+    - [users](#users)
+    - [clips](#clips)
+    - [lists](#lists)
+    - [notifications](#notifications)
+
+
+### Data types
+
+#### status()
+
+```
+status() = 200 | 201 | 204 | 400 | 401 | 404
+```
+
+#### result()
+
+```
+result() = {ok, {status(), json_term()}}
+```

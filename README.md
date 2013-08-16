@@ -2,6 +2,10 @@
 
 Erlang library for the Kippt API
 
+## Requirement
+
+  * Erlang/OTP R14 or newer
+
 ## Build
 
 ```
@@ -93,7 +97,22 @@ true
 {ok,{204,[]}}
 ```
 
+## Start application
+
+First off, start kippelr application
+
+```erlang
+application:start(crypto),
+application:start(public_key),
+application:start(ssl),
+application:start(inets),
+application:start(kippelr).
+```
+
 ## Index
+
+All these belong to the [kippelr](src/kippelr.erl) module.
+
   * [Data types](#Data-types)
     - [status()](#status)
     - [json_term()](#json_term)
@@ -497,3 +516,7 @@ mark notifications as read
 ```erlang
 mark_notifications_as_read() -> result()
 ```
+
+## License
+
+MIT, see LICENSE file for more details.

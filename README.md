@@ -168,13 +168,13 @@ result() = {ok, {status(), json_term()}}
 #### basic auth
 
 ```erlang
-kippelr:auth({basic_auth, {"username", "password"}})
+auth({basic_auth, {Username :: string(), Password :: string()}}) -> ok
 ```
 
 #### api token
 
 ```erlang
-kippelr:auth({token_auth, {"username", "api_token"}})
+auth({token_auth, {Username :: string(), ApiToken :: string()}}) -> ok
 ```
 
 ### account

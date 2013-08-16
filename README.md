@@ -155,5 +155,51 @@ kippelr:auth({basic_auth, {"username", "password"}})
 #### api token
 
 ```erlang
-kippelr:auth({token_auth, {"username", "api_token"}}).
+kippelr:auth({token_auth, {"username", "api_token"}})
+```
+
+### account
+
+#### account/0
+
+```erlang
+account() -> result()
+```
+
+#### is_authenticated/0
+
+```erlang
+is_authenticated() -> boolean()
+```
+
+### users
+
+#### get_user/1
+
+```erlang
+get_user(UserId :: id()) -> result()
+```
+
+#### get_user_clips/1
+
+```erlang
+get_user_clips(UserId :: id()) -> result()
+```
+
+#### get_user_favorites/1
+
+```erlang
+get_user_favorites(UserId :: id()) -> result()
+```
+
+#### get_user_likes/1
+
+```erlang
+get_user_likes(UserId :: id()) -> result()
+```
+
+#### get_user_followers/1
+
+```erlang
+get_user_followers(UserId :: id()) -> result()
 ```

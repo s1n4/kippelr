@@ -267,3 +267,139 @@ search_users(Params :: string()) -> result()
 
 %% e.g search_users("Sina Samavati")
 ```
+
+### clips
+
+#### get_clips/0
+
+get logged-in user's clips
+
+```erlang
+get_clips() -> result()
+```
+
+#### get_clips_favorites/0
+
+get logged-in user's favorites
+
+```erlang
+get_clips_favorites() -> result()
+```
+
+#### get_clips_feed/0
+
+get logged-in user's feed
+
+```erlang
+get_clips_feed() -> result()
+```
+
+#### get_clip/1
+
+get a clip
+
+```erlang
+get_clip(ClipId :: integer) -> result()
+```
+
+#### get_clip_comments/1
+
+get a clip's comments
+
+```erlang
+get_clip_comments(ClipId :: integer()) -> result()
+```
+
+#### get_clip_likes/1
+
+get a clip's likes
+
+```erlang
+get_clip_likes(ClipId :: integer()) -> result()
+```
+
+#### search_clips/1
+
+search for clips
+
+```erlang
+search_clips(Params :: string()) -> result()
+
+%% e.g search_clips("erlang lib")
+```
+
+#### delete_clip/1
+
+delete a clip
+
+```erlang
+delete_clip(ClipId :: integer()) -> result()
+```
+
+#### delete_clip_comment/1
+
+delete a comment
+
+```erlang
+delete_clip_comment(ClipId :: integer(), CommentId :: integer()) -> result()
+```
+
+#### favorite/1
+
+favorite a clip
+
+```erlang
+favorite(ClipId :: integer()) -> result()
+```
+
+#### unfavorite/1
+
+unfavorite a clip
+
+```erlang
+unfavorite(ClipId :: integer()) -> result()
+```
+
+#### like/1
+
+like a clip
+
+```erlang
+like(ClipId :: integer()) -> result()
+```
+
+#### unlike/1
+
+unlike a clip
+
+```erlang
+unlike(ClipId :: integer()) -> result()
+```
+
+#### create_clip/1
+
+create a clip
+
+```erlang
+create_clip(Clip :: json_term()) -> result()
+
+%% e.g create_clip([{<<"url">>, <<"https://github.com/s1n4/kippelr">>}])
+```
+
+#### create_comment/2
+
+leave a comment on a clip
+
+```erlang
+create_comment(ClipId :: integer(), Comment :: json_term()) -> result()
+
+%% e.g create_comment(ClipId, [{<<"body">>, <<"comment body..">>}]) -> result()
+```
+
+#### modify_clip/2
+
+modify a clip
+
+```erlang
+modify_clip(ClipId :: integer(), Clip :: json_term()) -> result()
+```

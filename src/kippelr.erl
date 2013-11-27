@@ -270,27 +270,27 @@ delete_list(Id) ->
 get_user(Id) ->
     gen_server:call(?MODULE, {get, [users, Id]}, ?TIMEOUT).
 
-%% @doc get an user's public clips
+%% @doc get a user's public clips
 get_user_clips(Id) ->
     gen_server:call(?MODULE, {get, [users, Id, clips]}, ?TIMEOUT).
 
-%% @doc get an user's public favorites
+%% @doc get a user's public favorites
 get_user_favorites(Id) ->
     gen_server:call(?MODULE, {get, [users, Id, clips, favorites]}, ?TIMEOUT).
 
-%% @doc get an user's public likes
+%% @doc get a user's public likes
 get_user_likes(Id) ->
     gen_server:call(?MODULE, {get, [users, Id, clips, likes]}, ?TIMEOUT).
 
-%% @doc get an user's followers
+%% @doc get a user's followers
 get_user_followers(Id) ->
     gen_server:call(?MODULE, {get, [users, Id, followers]}, ?TIMEOUT).
 
-%% @doc get an user's public lists
+%% @doc get a user's public lists
 get_user_lists(Id) ->
     gen_server:call(?MODULE, {get, [users, Id, lists]}, ?TIMEOUT).
 
-%% @doc get an user's public list
+%% @doc get a user's public list
 get_user_list(UserId, ListId) ->
     gen_server:call(?MODULE, {get, [users, UserId, lists, ListId]}, ?TIMEOUT).
 
@@ -298,7 +298,7 @@ get_user_list(UserId, ListId) ->
 is_following_user(Id) ->
     gen_server:call(?MODULE, {get, [users, Id, relationship]}, ?TIMEOUT).
 
-%% @doc follow an user
+%% @doc follow a user
 follow_user(Id) ->
     Data = [
             {endpoint, {users, Id}},
@@ -307,7 +307,7 @@ follow_user(Id) ->
            ],
     gen_server:call(?MODULE, {post, Data}, ?TIMEOUT).
 
-%% @doc unfollow an user
+%% @doc unfollow a user
 unfollow_user(Id) ->
     Data = [
             {endpoint, {users, Id}},

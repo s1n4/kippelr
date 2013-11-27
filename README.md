@@ -207,7 +207,7 @@ get_user(UserId :: id()) -> result()
 
 #### get_user_clips/1
 
-get an user's public clips
+get a user's public clips
 
 ```erlang
 get_user_clips(UserId :: id()) -> result()
@@ -215,7 +215,7 @@ get_user_clips(UserId :: id()) -> result()
 
 #### get_user_favorites/1
 
-get an user's public favorites
+get a user's public favorites
 
 ```erlang
 get_user_favorites(UserId :: id()) -> result()
@@ -223,7 +223,7 @@ get_user_favorites(UserId :: id()) -> result()
 
 #### get_user_likes/1
 
-get an user's public likes
+get a user's public likes
 
 ```erlang
 get_user_likes(UserId :: id()) -> result()
@@ -231,7 +231,7 @@ get_user_likes(UserId :: id()) -> result()
 
 #### get_user_followers/1
 
-get an user's followers
+get a user's followers
 
 ```erlang
 get_user_followers(UserId :: id()) -> result()
@@ -239,7 +239,7 @@ get_user_followers(UserId :: id()) -> result()
 
 #### get_user_lists/1
 
-get an user's public lists
+get a user's public lists
 
 ```erlang
 get_user_lists(UserId :: id()) -> result()
@@ -247,7 +247,7 @@ get_user_lists(UserId :: id()) -> result()
 
 #### get_user_list/2
 
-get an user's public list
+get a user's public list
 
 ```erlang
 get_user_list(UserId :: id(), ListId :: id()) -> result()
@@ -263,7 +263,7 @@ is_following_user(UserId :: id()) -> result()
 
 #### follow_user/1
 
-follow an user
+follow a user
 
 ```erlang
 follow_user(UserId :: id()) -> result()
@@ -271,7 +271,7 @@ follow_user(UserId :: id()) -> result()
 
 #### unfollow_user/1
 
-unfollow an user
+unfollow a user
 
 ```erlang
 unfollow_user(UserId :: id()) -> result()
